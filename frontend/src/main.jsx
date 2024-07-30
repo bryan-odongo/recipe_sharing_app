@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ClerkProvider } from "@clerk/clerk-react";
 
 import "./index.css";
 
@@ -21,7 +22,6 @@ import RecipePage from "./pages/RecipePage";
 // Dashboard
 import DashboardPage from "./pages/dashboard/Index";
 import ProfilePage from "./pages/ProfilePage";
-import Layout from "./components/Layout/Layout";
 
 // Routes
 const router = createBrowserRouter([
@@ -82,8 +82,17 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Clerk private key
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key");
+}
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+      <RouterProvider router={router} />
+    </ClerkProvider>
   </React.StrictMode>
 );
