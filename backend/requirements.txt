@@ -36,3 +36,5 @@ typing_extensions==4.12.2
 urllib3==2.2.2
 Werkzeug==3.0.3
 wheel==0.43.0
+cryptography>=3.4.7,<4.0
+

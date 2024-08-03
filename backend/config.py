@@ -1,19 +1,29 @@
-mssql = {"host": "dbhost", "user": "dbuser", "passwd": "dbPwd", "db": "db"}
+"""Flask config"""
 
-postgresql = {
-    "host": "0.0.0.0",
-    "user": "postgres",
-    "passwd": "asdf",
-    "db": "dev",
+import os
+from cryptography.fernet import Fernet
+
+def generate_key():
+    return Fernet.generate_key().decode()
+
+class Config:
+    SECRET_KEY = generate_key()
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+
+class ProductionConfig(Config):
+    DEBUG = False
+
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
 }
-
-sqliteConfig = "sqlite:///recipes_app.db"
-
-mssqlConfig = (
-    "mssql+pyodbc://{}:{}@{}:1433/{}?driver=SQL+Server+Native+Client+10.0".format(
-        mssql["user"], mssql["passwd"], mssql["host"], mssql["db"]
-    )
-)
-postgresqlConfig = "postgresql+psycopg2://{}:{}@{}/{}".format(
-    postgresql["user"], postgresql["passwd"], postgresql["host"], postgresql["db"]
-)
