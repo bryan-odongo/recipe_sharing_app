@@ -15,7 +15,13 @@ from resources.user import (
     UserResource,
     UserListResource,
 )
-from resources.recipe import IngredientResource, RecipeResource, RecipeListResource
+from resources.recipe import (
+    IngredientResource,
+    RecipeResource,
+    RecipeListResource,
+    OtherRecipeImageListResource,
+    OtherRecipeImageResource,
+)
 from resources.engagement import (
     CommentResource,
     CommentListResource,
@@ -72,6 +78,10 @@ api.add_resource(
 
 api.add_resource(RatingListResource, "/api/recipes/<int:recipe_id>/ratings")
 api.add_resource(RatingResource, "/api/recipes/<int:recipe_id>/ratings/<int:rating_id>")
+api.add_resource(OtherRecipeImageListResource, "/api/recipes/<int:recipe_id>/images")
+api.add_resource(
+    OtherRecipeImageResource, "/api/recipes/<int:recipe_id>/images/<int:image_id>"
+)
 
 
 # Test route

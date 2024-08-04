@@ -1,7 +1,6 @@
 from flask_restful import Resource, reqparse
 from flask import request
-from models.recipe import Recipe, Ingredient
-from models.engagement import Comment
+from models.recipe import Recipe, Ingredient, OtherRecipeImages
 from models.user import UserModel
 from database import db
 
@@ -19,6 +18,13 @@ class RecipeResource(Resource):
                 "instructions": recipe.instructions,
                 "banner_image": recipe.banner_image,
                 "user_id": recipe.user_id,
+                "other_images": [
+                    {
+                        "id": image.id,
+                        "image": image.image,
+                    }
+                    for image in recipe.other_images
+                ],
                 "ingredients": [
                     {
                         "id": ingredient.id,
@@ -320,3 +326,78 @@ class IngredientResource(Resource):
             db.session.commit()
             return {"message": "Ingredient deleted"}, 200
         return {"error": "Ingredient not found"}, 404
+
+
+class OtherRecipeImageResource(Resource):
+    def get(self, recipe_id, image_id):
+        image = OtherRecipeImages.query.filter_by(
+            id=image_id, recipe_id=recipe_id
+        ).first()
+        if image:
+            return {
+                "id": image.id,
+                "image": image.image,
+                "recipe_id": image.recipe_id,
+            }, 200
+        return {"error": "Image not found"}, 404
+
+    def put(self, recipe_id, image_id):
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            "image", type=str, required=True, help="Image URL cannot be blank!"
+        )
+        data = parser.parse_args()
+
+        image = OtherRecipeImages.query.filter_by(
+            id=image_id, recipe_id=recipe_id
+        ).first()
+        if not image:
+            return {"error": "Image not found"}, 404
+
+        try:
+            image.image = data["image"]
+            db.session.commit()
+            return {
+                "id": image.id,
+                "image": image.image,
+                "recipe_id": image.recipe_id,
+            }, 200
+        except Exception as e:
+            return {"error": str(e)}, 400
+
+    def delete(self, recipe_id, image_id):
+        image = OtherRecipeImages.query.filter_by(
+            id=image_id, recipe_id=recipe_id
+        ).first()
+        if not image:
+            return {"error": "Image not found"}, 404
+
+        db.session.delete(image)
+        db.session.commit()
+        return {"message": "Image deleted"}, 200
+
+
+class OtherRecipeImageListResource(Resource):
+    def post(self, recipe_id):
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            "image", type=str, required=True, help="Image URL cannot be blank!"
+        )
+        data = parser.parse_args()
+
+        recipe = Recipe.query.get(recipe_id)
+        if not recipe:
+            return {"error": "Recipe not found"}, 404
+
+        try:
+            new_image = OtherRecipeImages(image=data["image"], recipe_id=recipe_id)
+            db.session.add(new_image)
+            db.session.commit()
+
+            return {
+                "id": new_image.id,
+                "image": new_image.image,
+                "recipe_id": new_image.recipe_id,
+            }, 201
+        except Exception as e:
+            return {"error": str(e)}, 400
