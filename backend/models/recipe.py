@@ -22,6 +22,9 @@ class Recipe(db.Model):
     ratings = db.relationship(
         "Rating", back_populates="recipe", cascade="all, delete-orphan"
     )
+    other_images = db.relationship(
+        "OtherRecipeImages", back_populates="recipe", cascade="all, delete-orphan"
+    )
 
     @validates("title")
     def validate_title(self, key, title):
@@ -31,6 +34,10 @@ class Recipe(db.Model):
 
     def __repr__(self):
         return f"<Recipe(title={self.title}, user_id={self.user_id})>"
+
+    __tableargs__ = (
+        db.UniqueConstraint("title", "user_id", name="unique_user_recipe_title"),
+    )
 
 
 class Ingredient(db.Model):
@@ -46,3 +53,21 @@ class Ingredient(db.Model):
 
     def __repr__(self):
         return f"<Ingredient(name={self.name}, recipe_id={self.recipe_id})>"
+
+    __table_args__ = (
+        db.UniqueConstraint("name", "recipe_id", name="unique_recipe_ingredient"),
+    )
+
+
+class OtherRecipeImages(db.Model):
+    __tablename__ = "other_recipe_images"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    image = db.Column(db.String(256), nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.id"), nullable=False)
+
+    recipe = db.relationship("Recipe", back_populates="other_images")
+
+    __table_args__ = (
+        db.UniqueConstraint("image", "recipe_id", name="unique_recipe_image"),
+    )
