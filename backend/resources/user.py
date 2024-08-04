@@ -70,7 +70,7 @@ class LoginResource(Resource):
 
 
 class ResetPasswordResource(Resource):
-    @jwt_required()
+    # @jwt_required()
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument(
@@ -94,14 +94,14 @@ class ResetPasswordResource(Resource):
 
 
 class UserResource(Resource):
-    @jwt_required()
+    # @jwt_required()
     def get(self, user_id):
         user = UserModel.get_user(user_id)
         if user:
             return user.json()
         return {"error": "User not found"}, 404
 
-    @jwt_required()
+    # @jwt_required()
     def put(self, user_id):
         parser = reqparse.RequestParser()
         parser.add_argument("firstname", type=str)
@@ -126,7 +126,7 @@ class UserResource(Resource):
         except ValueError as e:
             return {"message": str(e)}, 400
 
-    @jwt_required()
+    # @jwt_required()
     def delete(self, user_id):
         user = UserModel.get_user(user_id)
         if user:
@@ -136,7 +136,7 @@ class UserResource(Resource):
 
 
 class UserListResource(Resource):
-    @jwt_required()
+    # @jwt_required()
     def get(self):
         users = UserModel.get_all_users()
         return [user.json() for user in users], 200

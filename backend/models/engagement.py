@@ -1,29 +1,50 @@
-from sqlalchemy import Column, Integer, Text, ForeignKey, Boolean, String
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
+from sqlalchemy.orm import validates
+from database import db
 
 
-class Rating(Base):
+class Comment(db.Model):
+    __tablename__ = "comments"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    text = db.Column(db.Text, nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    timestamp = db.Column(
+        db.DateTime, default=db.func.current_timestamp(), nullable=False
+    )
+
+    recipe = db.relationship("Recipe", back_populates="comments")
+    user = db.relationship("UserModel", back_populates="comments")
+
+    def __repr__(self):
+        return f"<Comment(user_id={self.user_id}, recipe_id={self.recipe_id}, timestamp={self.timestamp})>"
+
+    @validates("text")
+    def validate_text(self, key, text):
+        if not text:
+            raise ValueError("Comment text is required")
+        return text
+
+
+class Rating(db.Model):
     __tablename__ = "ratings"
 
-    id = Column(Integer, primary_key=True)
-    recipe_id = Column(Integer, ForeignKey("recipes.id"))
-    user_id = Column(Integer, ForeignKey("users.id"))
-    rating = Column(Integer)  # Scale from 1 to 5
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    value = db.Column(db.Integer, nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    timestamp = db.Column(
+        db.DateTime, default=db.func.current_timestamp(), nullable=False
+    )
 
-    recipe = relationship("Recipe", back_populates="ratings")
-    user = relationship("User", back_populates="ratings")
+    recipe = db.relationship("Recipe", back_populates="ratings")
+    user = db.relationship("UserModel", back_populates="ratings")
 
+    def __repr__(self):
+        return f"<Rating(user_id={self.user_id}, recipe_id={self.recipe_id}, value={self.value}, timestamp={self.timestamp})>"
 
-class Notification(Base):
-    __tablename__ = "notifications"
-
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    message = Column(Text)
-    is_read = Column(Boolean, default=False)
-    created_at = Column(String)
-
-    user = relationship("User", back_populates="notifications")
+    @validates("value")
+    def validate_value(self, key, value):
+        if not (1 <= value <= 5):
+            raise ValueError("Rating value must be between 1 and 5")
+        return value

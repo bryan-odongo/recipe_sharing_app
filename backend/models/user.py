@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.orm import validates, relationship
 from database import db
-from sqlalchemy.orm import validates
 
 
 class UserModel(db.Model):
@@ -12,6 +12,16 @@ class UserModel(db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
+
+    recipes = relationship(
+        "Recipe", back_populates="user", cascade="all, delete-orphan"
+    )
+    comments = db.relationship(
+        "Comment", back_populates="user", cascade="all, delete-orphan"
+    )
+    ratings = db.relationship(
+        "Rating", back_populates="user", cascade="all, delete-orphan"
+    )
 
     @validates("firstname")
     def validate_firstname(self, key, firstname):

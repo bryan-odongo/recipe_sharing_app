@@ -16,6 +16,14 @@ from resources.user import (
     UserListResource,
 )
 
+from resources.recipe import IngredientResource, RecipeResource, RecipeListResource
+from resources.engagement import (
+    CommentResource,
+    CommentListResource,
+    RatingResource,
+    RatingListResource,
+)
+
 
 from config import sqliteConfig
 
@@ -42,16 +50,26 @@ api.add_resource(LoginResource, "/api/auth/login")
 api.add_resource(ResetPasswordResource, "/auth/reset-password")
 api.add_resource(UserResource, "/api/auth/users/<int:user_id>")
 api.add_resource(UserListResource, "/api/auth/users")
+# recipes
+api.add_resource(RecipeListResource, "/api/recipes")
+api.add_resource(RecipeResource, "/api/recipes/<int:recipe_id>")
+api.add_resource(
+    IngredientResource, "/api/recipes/<int:recipe_id>/ingredients/<int:ingredient_id>"
+)
+api.add_resource(CommentListResource, "/api/recipes/<int:recipe_id>/comments")
+api.add_resource(
+    CommentResource, "/api/recipes/<int:recipe_id>/comments/<int:comment_id>"
+)
+api.add_resource(RatingListResource, "/api/recipes/<int:recipe_id>/ratings")
+api.add_resource(RatingResource, "/api/recipes/<int:recipe_id>/ratings/<int:rating_id>")
 
 
-# create resources
-# Define a sample resource
+# Test route
 class HelloWorld(Resource):
     def get(self):
         return jsonify({"message": "Hello, World!"})
 
 
-# Add the resource to the API
 api.add_resource(HelloWorld, "/hello")
 
 
