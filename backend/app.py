@@ -51,11 +51,11 @@ CORS(app)
 
 
 # auth
-api.add_resource(RegisterResource, "/api/auth/register")
-api.add_resource(LoginResource, "/api/auth/login")
-api.add_resource(ResetPasswordResource, "/auth/reset-password")
-api.add_resource(UserResource, "/api/auth/users/<int:user_id>")
-api.add_resource(UserListResource, "/api/auth/users")
+api.add_resource(RegisterResource, "/api/register")
+api.add_resource(LoginResource, "/api/login")
+api.add_resource(ResetPasswordResource, "/reset-password")
+api.add_resource(UserResource, "/api/users/<int:user_id>")
+api.add_resource(UserListResource, "/api/users")
 # recipes
 api.add_resource(RecipeListResource, "/api/recipes")
 api.add_resource(RecipeResource, "/api/recipes/<int:recipe_id>")
