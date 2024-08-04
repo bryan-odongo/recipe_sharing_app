@@ -1,10 +1,9 @@
 import secrets
 from flask import Flask, jsonify
+from flasgger import Swagger
 from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
-from flask_swagger import swagger
-from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 from database import db
 
@@ -46,7 +45,7 @@ db.init_app(app)
 api = Api(app)
 migrate = Migrate(app, db)
 jwt = JWTManager(app)
-swagger = swagger(app)
+swagger = Swagger(app)
 
 CORS(app)
 
@@ -60,13 +59,16 @@ api.add_resource(UserListResource, "/api/auth/users")
 # recipes
 api.add_resource(RecipeListResource, "/api/recipes")
 api.add_resource(RecipeResource, "/api/recipes/<int:recipe_id>")
+# ingredients
 api.add_resource(
     IngredientResource, "/api/recipes/<int:recipe_id>/ingredients/<int:ingredient_id>"
 )
+# comments
 api.add_resource(CommentListResource, "/api/recipes/<int:recipe_id>/comments")
 api.add_resource(
     CommentResource, "/api/recipes/<int:recipe_id>/comments/<int:comment_id>"
 )
+# responses
 api.add_resource(
     CommentResponseListResource,
     "/api/recipes/<int:recipe_id>/comments/<int:comment_id>/responses",
@@ -75,9 +77,10 @@ api.add_resource(
     CommentResponseResource,
     "/api/recipes/<int:recipe_id>/comments/<int:comment_id>/responses/<int:response_id>",
 )
-
+# ratings
 api.add_resource(RatingListResource, "/api/recipes/<int:recipe_id>/ratings")
 api.add_resource(RatingResource, "/api/recipes/<int:recipe_id>/ratings/<int:rating_id>")
+# other images
 api.add_resource(OtherRecipeImageListResource, "/api/recipes/<int:recipe_id>/images")
 api.add_resource(
     OtherRecipeImageResource, "/api/recipes/<int:recipe_id>/images/<int:image_id>"
@@ -87,6 +90,15 @@ api.add_resource(
 # Test route
 class HelloWorld(Resource):
     def get(self):
+        """
+        This is an example endpoint that returns 'Hello, World!'
+        ---
+        responses:
+            200:
+                description: A successful response
+                examples:
+                    application/json: "Hello, World!"
+        """
         return jsonify({"message": "Hello, World!"})
 
 

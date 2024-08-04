@@ -7,6 +7,123 @@ from database import db
 
 class RecipeResource(Resource):
     def get(self, recipe_id):
+        """
+        Retrieve a specific recipe by ID.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            required: true
+            type: integer
+            description: The ID of the recipe to retrieve
+        responses:
+          200:
+            description: The recipe details
+            schema:
+              id: Recipe
+              properties:
+                id:
+                  type: integer
+                  description: The recipe ID
+                title:
+                  type: string
+                  description: The title of the recipe
+                description:
+                  type: string
+                  description: A short description of the recipe
+                instructions:
+                  type: string
+                  description: The instructions for the recipe
+                banner_image:
+                  type: string
+                  description: The URL of the recipe's banner image
+                user_id:
+                  type: integer
+                  description: The ID of the user who created the recipe
+                other_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: The image ID
+                      image:
+                        type: string
+                        description: The URL of the image
+                ingredients:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: The ingredient ID
+                      name:
+                        type: string
+                        description: The name of the ingredient
+                      image:
+                        type: string
+                        description: The URL of the ingredient image
+                      quantity:
+                        type: string
+                        description: The quantity of the ingredient
+                comments:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: The comment ID
+                      text:
+                        type: string
+                        description: The text of the comment
+                      user_id:
+                        type: integer
+                        description: The ID of the user who made the comment
+                      recipe_id:
+                        type: integer
+                        description: The ID of the recipe the comment belongs to
+                      responses:
+                        type: integer
+                        description: The number of responses to the comment
+                      timestamp:
+                        type: string
+                        description: The timestamp of the comment
+                ratings:
+                  type: number
+                  description: The average rating of the recipe
+            examples:
+              application/json:
+                id: 1
+                title: "Spaghetti Carbonara"
+                description: "A classic Italian pasta dish"
+                instructions: "Boil pasta, fry pancetta, mix with eggs and cheese"
+                banner_image: "http://example.com/image1.jpg"
+                user_id: 1
+                other_images:
+                  - id: 1
+                    image: "http://example.com/image2.jpg"
+                ingredients:
+                  - id: 1
+                    name: "Spaghetti"
+                    image: "http://example.com/image3.jpg"
+                    quantity: "200g"
+                comments:
+                  - id: 1
+                    text: "Great recipe!"
+                    user_id: 1
+                    recipe_id: 1
+                    responses: 2
+                    timestamp: "2024-08-04T12:00:00"
+                ratings: 4.5
+          404:
+            description: Recipe not found
+            examples:
+              application/json:
+                error: "Recipe not found"
+        """
         recipe = Recipe.query.get(recipe_id)
         if recipe:
             ratings = [rating.value for rating in recipe.ratings]
@@ -50,6 +167,112 @@ class RecipeResource(Resource):
         return {"error": "Recipe not found"}, 404
 
     def put(self, recipe_id):
+        """
+        Update an existing recipe by ID.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            required: true
+            type: integer
+            description: The ID of the recipe to update
+          - name: body
+            in: body
+            required: true
+            schema:
+              id: UpdateRecipe
+              properties:
+                title:
+                  type: string
+                  description: The title of the recipe
+                description:
+                  type: string
+                  description: A short description of the recipe
+                instructions:
+                  type: string
+                  description: The instructions for the recipe
+                banner_image:
+                  type: string
+                  description: The URL of the recipe's banner image
+                ingredients:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the ingredient
+                      image:
+                        type: string
+                        description: The URL of the ingredient image
+                      quantity:
+                        type: string
+                        description: The quantity of the ingredient
+        responses:
+          200:
+            description: The updated recipe
+            schema:
+              id: Recipe
+              properties:
+                id:
+                  type: integer
+                  description: The recipe ID
+                title:
+                  type: string
+                  description: The title of the recipe
+                description:
+                  type: string
+                  description: A short description of the recipe
+                instructions:
+                  type: string
+                  description: The instructions for the recipe
+                banner_image:
+                  type: string
+                  description: The URL of the recipe's banner image
+                user_id:
+                  type: integer
+                  description: The ID of the user who created the recipe
+                ingredients:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: The ingredient ID
+                      name:
+                        type: string
+                        description: The name of the ingredient
+                      image:
+                        type: string
+                        description: The URL of the ingredient image
+                      quantity:
+                        type: string
+                        description: The quantity of the ingredient
+            examples:
+              application/json:
+                id: 1
+                title: "Spaghetti Carbonara"
+                description: "A classic Italian pasta dish"
+                instructions: "Boil pasta, fry pancetta, mix with eggs and cheese"
+                banner_image: "http://example.com/image1.jpg"
+                user_id: 1
+                ingredients:
+                  - id: 1
+                    name: "Spaghetti"
+                    image: "http://example.com/image3.jpg"
+                    quantity: "200g"
+          400:
+            description: Invalid input
+            examples:
+              application/json:
+                error: "Invalid input"
+          404:
+            description: Recipe not found
+            examples:
+              application/json:
+                error: "Recipe not found"
+        """
         parser = reqparse.RequestParser()
         parser.add_argument(
             "title", type=str, required=True, help="Title cannot be blank!"
@@ -126,6 +349,27 @@ class RecipeResource(Resource):
             return {"error": str(e)}, 400
 
     def delete(self, recipe_id):
+        """
+        Delete a recipe by ID.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            required: true
+            type: integer
+            description: The ID of the recipe to delete
+        responses:
+          200:
+            description: Recipe deleted
+            examples:
+              application/json:
+                message: "Recipe deleted"
+          404:
+            description: Recipe not found
+            examples:
+              application/json:
+                error: "Recipe not found"
+        """
         recipe = Recipe.query.get(recipe_id)
         if recipe:
             db.session.delete(recipe)
@@ -134,6 +378,118 @@ class RecipeResource(Resource):
         return {"error": "Recipe not found"}, 404
 
     def post(self):
+        """
+        Create a new recipe.
+        ---
+        parameters:
+          - name: body
+            in: body
+            required: true
+            schema:
+              id: NewRecipe
+              required:
+                - title
+                - user_id
+              properties:
+                title:
+                  type: string
+                  description: The title of the recipe
+                description:
+                  type: string
+                  description: A short description of the recipe
+                instructions:
+                  type: string
+                  description: The instructions for the recipe
+                banner_image:
+                  type: string
+                  description: The URL of the recipe's banner image
+                user_id:
+                  type: integer
+                  description: The ID of the user who created the recipe
+                ingredients:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the ingredient
+                      image:
+                        type: string
+                        description: The URL of the ingredient image
+                      quantity:
+                        type: string
+                        description: The quantity of the ingredient
+        responses:
+          201:
+            description: The created recipe
+            schema:
+              id: Recipe
+              properties:
+                id:
+                  type: integer
+                  description: The recipe ID
+                title:
+                  type: string
+                  description: The title of the recipe
+                description:
+                  type: string
+                  description: A short description of the recipe
+                instructions:
+                  type: string
+                  description: The instructions for the recipe
+                banner_image:
+                  type: string
+                  description: The URL of the recipe's banner image
+                user_id:
+                  type: integer
+                  description: The ID of the user who created the recipe
+                ingredients:
+                  type: array
+                  items:
+                    id: Ingredient
+                    properties:
+                      id:
+                        type: integer
+                        description: The ingredient ID
+                      name:
+                        type: string
+                        description: The name of the ingredient
+                      image:
+                        type: string
+                        description: The URL of the ingredient image
+                      quantity:
+                        type: string
+                        description: The quantity of the ingredient
+            examples:
+              application/json:
+                id: 1
+                title: "Spaghetti Carbonara"
+                description: "A classic Italian pasta dish"
+                instructions: "Boil pasta, fry pancetta, mix with eggs and cheese"
+                banner_image: "http://example.com/image1.jpg"
+                user_id: 1
+                ingredients:
+                  - id: 1
+                    name: "Spaghetti"
+                    image: "http://example.com/image3.jpg"
+                    quantity: "200g"
+          400:
+            description: Invalid input
+            examples:
+              application/json:
+                error: "Invalid input"
+          404:
+            description: User not found
+            examples:
+              application/json:
+                error: "User not found"
+          500:
+            description: An unexpected error occurred
+            examples:
+              application/json:
+                error: "An unexpected error occurred"
+        """
         data = request.get_json()
 
         title = data.get("title")
@@ -184,6 +540,50 @@ class RecipeResource(Resource):
 
 class RecipeListResource(Resource):
     def get(self):
+        """
+        Retrieve all recipes.
+        ---
+        responses:
+          200:
+            description: A list of all recipes
+            schema:
+              type: array
+              items:
+                id: Recipe
+                properties:
+                  id:
+                    type: integer
+                    description: The recipe ID
+                  title:
+                    type: string
+                    description: The title of the recipe
+                  description:
+                    type: string
+                    description: A short description of the recipe
+                  instructions:
+                    type: string
+                    description: The instructions for the recipe
+                  banner_image:
+                    type: string
+                    description: The URL of the recipe's banner image
+                  user_id:
+                    type: integer
+                    description: The ID of the user who created the recipe
+            examples:
+              application/json:
+                - id: 1
+                  title: "Spaghetti Carbonara"
+                  description: "A classic Italian pasta dish"
+                  instructions: "Boil pasta, fry pancetta, mix with eggs and cheese"
+                  banner_image: "http://example.com/image1.jpg"
+                  user_id: 1
+                - id: 2
+                  title: "Chicken Curry"
+                  description: "A spicy and savory chicken curry"
+                  instructions: "Cook chicken, add spices, simmer with coconut milk"
+                  banner_image: "http://example.com/image2.jpg"
+                  user_id: 2
+        """
         recipes = Recipe.query.all()
         return [
             {
@@ -198,6 +598,122 @@ class RecipeListResource(Resource):
         ], 200
 
     def post(self):
+        """
+        Create a new recipe.
+        ---
+        parameters:
+          - name: body
+            in: body
+            required: true
+            schema:
+              id: NewRecipe
+              required:
+                - title
+                - user_id
+              properties:
+                title:
+                  type: string
+                  description: The title of the recipe
+                description:
+                  type: string
+                  description: A short description of the recipe
+                instructions:
+                  type: string
+                  description: The instructions for the recipe
+                banner_image:
+                  type: string
+                  description: The URL of the recipe's banner image
+                user_id:
+                  type: integer
+                  description: The ID of the user who created the recipe
+                ingredients:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: The name of the ingredient
+                      image:
+                        type: string
+                        description: The URL of the ingredient image
+                      quantity:
+                        type: string
+                        description: The quantity of the ingredient
+        responses:
+          201:
+            description: The created recipe
+            schema:
+              id: Recipe
+              properties:
+                id:
+                  type: integer
+                  description: The recipe ID
+                title:
+                  type: string
+                  description: The title of the recipe
+                description:
+                  type: string
+                  description: A short description of the recipe
+                instructions:
+                  type: string
+                  description: The instructions for the recipe
+                banner_image:
+                  type: string
+                  description: The URL of the recipe's banner image
+                user_id:
+                  type: integer
+                  description: The ID of the user who created the recipe
+                ingredients:
+                  type: array
+                  items:
+                    id: Ingredient
+                    properties:
+                      id:
+                        type: integer
+                        description: The ingredient ID
+                      name:
+                        type: string
+                        description: The name of the ingredient
+                      image:
+                        type: string
+                        description: The URL of the ingredient image
+                      quantity:
+                        type: string
+                        description: The quantity of the ingredient
+            examples:
+              application/json:
+                id: 1
+                title: "Spaghetti Carbonara"
+                description: "A classic Italian pasta dish"
+                instructions: "Boil pasta, fry pancetta, mix with eggs and cheese"
+                banner_image: "http://example.com/image1.jpg"
+                user_id: 1
+                ingredients:
+                  - id: 1
+                    name: "Spaghetti"
+                    image: "http://example.com/image3.jpg"
+                    quantity: "200g"
+                  - id: 2
+                    name: "Pancetta"
+                    image: "http://example.com/image4.jpg"
+                    quantity: "100g"
+          400:
+            description: Invalid input
+            examples:
+              application/json:
+                error: "Invalid input"
+          404:
+            description: User not found
+            examples:
+              application/json:
+                error: "User not found"
+          500:
+            description: An unexpected error occurred
+            examples:
+              application/json:
+                error: "An unexpected error occurred"
+        """
         parser = reqparse.RequestParser()
         parser.add_argument(
             "title", type=str, required=True, help="Title cannot be blank!"
@@ -263,6 +779,50 @@ class RecipeListResource(Resource):
 
 class IngredientResource(Resource):
     def get(self, recipe_id, ingredient_id):
+        """
+        Get an ingredient associated with a specific recipe.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the recipe
+          - name: ingredient_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the ingredient
+        responses:
+          200:
+            description: A successful response
+            schema:
+              id: Ingredient
+              properties:
+                id:
+                  type: integer
+                  description: The ingredient ID
+                name:
+                  type: string
+                  description: The name of the ingredient
+                image:
+                  type: string
+                  description: The URL of the ingredient image
+                quantity:
+                  type: string
+                  description: The quantity of the ingredient
+            examples:
+              application/json:
+                id: 1
+                name: "Sugar"
+                image: "http://example.com/image1.jpg"
+                quantity: "100g"
+          404:
+            description: Ingredient not found
+            examples:
+              application/json:
+                error: "Ingredient not found"
+        """
         recipe = Recipe.query.get(recipe_id)
         if not recipe:
             return {"error": "Recipe not found"}, 404
@@ -280,6 +840,72 @@ class IngredientResource(Resource):
         return {"error": "Ingredient not found"}, 404
 
     def put(self, recipe_id, ingredient_id):
+        """
+        Update an ingredient associated with a specific recipe.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the recipe
+          - name: ingredient_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the ingredient
+          - name: body
+            in: body
+            required: true
+            schema:
+              id: UpdateIngredient
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: The new name of the ingredient
+                image:
+                  type: string
+                  description: The new URL of the ingredient image
+                quantity:
+                  type: string
+                  description: The new quantity of the ingredient
+        responses:
+          200:
+            description: A successful response
+            schema:
+              id: Ingredient
+              properties:
+                id:
+                  type: integer
+                  description: The ingredient ID
+                name:
+                  type: string
+                  description: The name of the ingredient
+                image:
+                  type: string
+                  description: The URL of the ingredient image
+                quantity:
+                  type: string
+                  description: The quantity of the ingredient
+            examples:
+              application/json:
+                id: 1
+                name: "Brown Sugar"
+                image: "http://example.com/image2.jpg"
+                quantity: "200g"
+          400:
+            description: Invalid input
+            examples:
+              application/json:
+                error: "Invalid input"
+          404:
+            description: Ingredient not found
+            examples:
+              application/json:
+                error: "Ingredient not found"
+        """
         parser = reqparse.RequestParser()
         parser.add_argument(
             "name", type=str, required=True, help="Name cannot be blank!"
@@ -314,6 +940,32 @@ class IngredientResource(Resource):
             return {"error": str(e)}, 400
 
     def delete(self, recipe_id, ingredient_id):
+        """
+        Delete an ingredient associated with a specific recipe.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the recipe
+          - name: ingredient_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the ingredient
+        responses:
+          200:
+            description: A successful response
+            examples:
+              application/json:
+                message: "Ingredient deleted"
+          404:
+            description: Ingredient not found
+            examples:
+              application/json:
+                error: "Ingredient not found"
+        """
         recipe = Recipe.query.get(recipe_id)
         if not recipe:
             return {"error": "Recipe not found"}, 404
@@ -328,8 +980,144 @@ class IngredientResource(Resource):
         return {"error": "Ingredient not found"}, 404
 
 
+class IngredientListResource(Resource):
+    def post(self, recipe_id):
+        """
+        Add a new ingredient to a specific recipe.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the recipe
+          - name: body
+            in: body
+            required: true
+            schema:
+              id: NewIngredient
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: The name of the ingredient
+                image:
+                  type: string
+                  description: The URL of the ingredient image
+                quantity:
+                  type: string
+                  description: The quantity of the ingredient
+        responses:
+          201:
+            description: A successful response
+            schema:
+              id: Ingredient
+              properties:
+                id:
+                  type: integer
+                  description: The ingredient ID
+                name:
+                  type: string
+                  description: The name of the ingredient
+                image:
+                  type: string
+                  description: The URL of the ingredient image
+                quantity:
+                  type: string
+                  description: The quantity of the ingredient
+            examples:
+              application/json:
+                id: 1
+                name: "Sugar"
+                image: "http://example.com/image1.jpg"
+                quantity: "100g"
+          400:
+            description: Invalid input
+            examples:
+              application/json:
+                error: "Invalid input"
+          404:
+            description: Recipe not found
+            examples:
+              application/json:
+                error: "Recipe not found"
+        """
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            "name", type=str, required=True, help="Name cannot be blank!"
+        )
+        parser.add_argument("image", type=str, required=False)
+        parser.add_argument("quantity", type=str, required=False)
+        data = parser.parse_args()
+
+        recipe = Recipe.query.get(recipe_id)
+        if not recipe:
+            return {"error": "Recipe not found"}, 404
+
+        try:
+            new_ingredient = Ingredient(
+                name=data["name"],
+                image=data.get("image"),
+                quantity=data.get("quantity"),
+                recipe_id=recipe_id,
+            )
+            db.session.add(new_ingredient)
+            db.session.commit()
+
+            return {
+                "id": new_ingredient.id,
+                "name": new_ingredient.name,
+                "image": new_ingredient.image,
+                "quantity": new_ingredient.quantity,
+                "recipe_id": new_ingredient.recipe_id,
+            }, 201
+        except Exception as e:
+            return {"error": str(e)}, 400
+
+
 class OtherRecipeImageResource(Resource):
     def get(self, recipe_id, image_id):
+        """
+        Get an image associated with a specific recipe.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the recipe
+          - name: image_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the image
+        responses:
+          200:
+            description: A successful response
+            schema:
+              id: OtherRecipeImage
+              properties:
+                id:
+                  type: integer
+                  description: The image ID
+                image:
+                  type: string
+                  description: The URL of the image
+                recipe_id:
+                  type: integer
+                  description: The ID of the recipe
+            examples:
+              application/json:
+                id: 1
+                image: "http://example.com/image1.jpg"
+                recipe_id: 12
+          404:
+            description: Image not found
+            examples:
+              application/json:
+                error: "Image not found"
+        """
         image = OtherRecipeImages.query.filter_by(
             id=image_id, recipe_id=recipe_id
         ).first()
@@ -342,6 +1130,62 @@ class OtherRecipeImageResource(Resource):
         return {"error": "Image not found"}, 404
 
     def put(self, recipe_id, image_id):
+        """
+        Update an image associated with a specific recipe.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the recipe
+          - name: image_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the image
+          - name: body
+            in: body
+            required: true
+            schema:
+              id: UpdateOtherRecipeImage
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  description: The new URL of the image
+        responses:
+          200:
+            description: A successful response
+            schema:
+              id: OtherRecipeImage
+              properties:
+                id:
+                  type: integer
+                  description: The image ID
+                image:
+                  type: string
+                  description: The URL of the image
+                recipe_id:
+                  type: integer
+                  description: The ID of the recipe
+            examples:
+              application/json:
+                id: 1
+                image: "http://example.com/image2.jpg"
+                recipe_id: 12
+          400:
+            description: Invalid input
+            examples:
+              application/json:
+                error: "Invalid input"
+          404:
+            description: Image not found
+            examples:
+              application/json:
+                error: "Image not found"
+        """
         parser = reqparse.RequestParser()
         parser.add_argument(
             "image", type=str, required=True, help="Image URL cannot be blank!"
@@ -366,6 +1210,32 @@ class OtherRecipeImageResource(Resource):
             return {"error": str(e)}, 400
 
     def delete(self, recipe_id, image_id):
+        """
+        Delete an image associated with a specific recipe.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the recipe
+          - name: image_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the image
+        responses:
+          200:
+            description: A successful response
+            examples:
+              application/json:
+                message: "Image deleted"
+          404:
+            description: Image not found
+            examples:
+              application/json:
+                error: "Image not found"
+        """
         image = OtherRecipeImages.query.filter_by(
             id=image_id, recipe_id=recipe_id
         ).first()
@@ -379,6 +1249,57 @@ class OtherRecipeImageResource(Resource):
 
 class OtherRecipeImageListResource(Resource):
     def post(self, recipe_id):
+        """
+        Add a new image to a specific recipe.
+        ---
+        parameters:
+          - name: recipe_id
+            in: path
+            type: integer
+            required: true
+            description: The ID of the recipe
+          - name: body
+            in: body
+            required: true
+            schema:
+              id: NewOtherRecipeImage
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  description: The URL of the image
+        responses:
+          201:
+            description: A successful response
+            schema:
+              id: OtherRecipeImage
+              properties:
+                id:
+                  type: integer
+                  description: The image ID
+                image:
+                  type: string
+                  description: The URL of the image
+                recipe_id:
+                  type: integer
+                  description: The ID of the recipe
+            examples:
+              application/json:
+                id: 1
+                image: "http://example.com/image1.jpg"
+                recipe_id: 12
+          400:
+            description: Invalid input
+            examples:
+              application/json:
+                error: "Invalid input"
+          404:
+            description: Recipe not found
+            examples:
+              application/json:
+                error: "Recipe not found"
+        """
         parser = reqparse.RequestParser()
         parser.add_argument(
             "image", type=str, required=True, help="Image URL cannot be blank!"
