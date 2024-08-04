@@ -19,6 +19,9 @@ class UserModel(db.Model):
     comments = db.relationship(
         "Comment", back_populates="user", cascade="all, delete-orphan"
     )
+    comment_responses = db.relationship(
+        "CommentResponse", back_populates="user", cascade="all, delete-orphan"
+    )
     ratings = db.relationship(
         "Rating", back_populates="user", cascade="all, delete-orphan"
     )

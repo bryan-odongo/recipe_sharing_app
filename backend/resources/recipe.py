@@ -34,6 +34,7 @@ class RecipeResource(Resource):
                         "text": comment.text,
                         "user_id": comment.user_id,
                         "recipe_id": comment.recipe_id,
+                        "responses": len(comment.responses),
                         "timestamp": comment.timestamp.isoformat(),
                     }
                     for comment in recipe.comments

@@ -15,6 +15,7 @@ class Comment(db.Model):
 
     recipe = db.relationship("Recipe", back_populates="comments")
     user = db.relationship("UserModel", back_populates="comments")
+    responses = db.relationship("CommentResponse", back_populates="comment")
 
     def __repr__(self):
         return f"<Comment(user_id={self.user_id}, recipe_id={self.recipe_id}, timestamp={self.timestamp})>"
@@ -24,6 +25,24 @@ class Comment(db.Model):
         if not text:
             raise ValueError("Comment text is required")
         return text
+
+
+class CommentResponse(db.Model):
+    __tablename__ = "comment_responses"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    text = db.Column(db.Text, nullable=False)
+    comment_id = db.Column(db.Integer, db.ForeignKey("comments.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    timestamp = db.Column(
+        db.DateTime, default=db.func.current_timestamp(), nullable=False
+    )
+
+    comment = db.relationship("Comment", back_populates="responses")
+    user = db.relationship("UserModel", back_populates="comment_responses")
+
+    def __repr__(self):
+        return f"<CommentResponse(user_id={self.user_id}, comment_id={self.comment_id}, timestamp={self.timestamp})>"
 
 
 class Rating(db.Model):

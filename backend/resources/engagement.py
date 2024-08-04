@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.recipe import Recipe
-from models.engagement import Comment, Rating
+from models.engagement import Comment, CommentResponse, Rating
 from models.user import UserModel
 from database import db
 
@@ -14,6 +14,10 @@ class CommentResource(Resource):
                 "text": comment.text,
                 "recipe_id": comment.recipe_id,
                 "user_id": comment.user_id,
+                "responses": [
+                    {"id": response.id, "text": response.text}
+                    for response in comment.responses
+                ],
                 "timestamp": comment.timestamp.isoformat(),
             }, 200
         return {"error": "Comment not found"}, 404
@@ -84,6 +88,98 @@ class CommentListResource(Resource):
                 "recipe_id": comment.recipe_id,
                 "user_id": comment.user_id,
                 "timestamp": comment.timestamp.isoformat(),
+            }, 201
+        except ValueError as e:
+            return {"error": str(e)}, 400
+        except Exception as e:
+            return {"error": "An unexpected error occurred"}, 500
+
+
+class CommentResponseResource(Resource):
+    def get(self, recipe_id, comment_id, response_id):
+        response = CommentResponse.query.filter_by(
+            id=response_id, comment_id=comment_id
+        ).first()
+        if response:
+            return {
+                "id": response.id,
+                "text": response.text,
+                "comment_id": response.comment_id,
+                "user_id": response.user_id,
+                "timestamp": response.timestamp.isoformat(),
+            }, 200
+        return {"error": "Response not found"}, 404
+
+    def put(self, recipe_id, comment_id, response_id):
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            "text", type=str, required=True, help="Text cannot be blank!"
+        )
+        data = parser.parse_args()
+
+        response = CommentResponse.query.filter_by(
+            id=response_id, comment_id=comment_id
+        ).first()
+        if not response:
+            return {"error": "Response not found"}, 404
+
+        try:
+            response.text = data["text"]
+            db.session.commit()
+            return {
+                "id": response.id,
+                "text": response.text,
+                "comment_id": response.comment_id,
+                "user_id": response.user_id,
+                "timestamp": response.timestamp.isoformat(),
+            }, 200
+        except ValueError as e:
+            return {"error": str(e)}, 400
+
+    def delete(self, recipe_id, comment_id, response_id):
+        response = CommentResponse.query.filter_by(
+            id=response_id, comment_id=comment_id
+        ).first()
+        if not response:
+            return {"error": "Response not found"}, 404
+
+        db.session.delete(response)
+        db.session.commit()
+        return {"message": "Response deleted"}, 200
+
+
+class CommentResponseListResource(Resource):
+    def post(self, recipe_id, comment_id):
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            "text", type=str, required=True, help="Text cannot be blank!"
+        )
+        parser.add_argument(
+            "user_id", type=int, required=True, help="User ID cannot be blank!"
+        )
+        data = parser.parse_args()
+
+        comment = Comment.query.get(comment_id)
+        if not comment:
+            return {"error": "Comment not found"}, 404
+
+        user = UserModel.query.get(data["user_id"])
+        if not user:
+            return {"error": "User not found"}, 404
+
+        try:
+            response = CommentResponse(
+                text=data["text"], comment_id=comment_id, user_id=data["user_id"]
+            )
+            db.session.add(response)
+            db.session.commit()
+
+            return {
+                "id": response.id,
+                "text": response.text,
+                "comment_id": response.comment_id,
+                "user_id": response.user_id,
+                "timestamp": response.timestamp.isoformat(),
             }, 201
         except ValueError as e:
             return {"error": str(e)}, 400

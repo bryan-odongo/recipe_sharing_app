@@ -15,11 +15,12 @@ from resources.user import (
     UserResource,
     UserListResource,
 )
-
 from resources.recipe import IngredientResource, RecipeResource, RecipeListResource
 from resources.engagement import (
     CommentResource,
     CommentListResource,
+    CommentResponseListResource,
+    CommentResponseResource,
     RatingResource,
     RatingListResource,
 )
@@ -60,6 +61,15 @@ api.add_resource(CommentListResource, "/api/recipes/<int:recipe_id>/comments")
 api.add_resource(
     CommentResource, "/api/recipes/<int:recipe_id>/comments/<int:comment_id>"
 )
+api.add_resource(
+    CommentResponseListResource,
+    "/api/recipes/<int:recipe_id>/comments/<int:comment_id>/responses",
+)
+api.add_resource(
+    CommentResponseResource,
+    "/api/recipes/<int:recipe_id>/comments/<int:comment_id>/responses/<int:response_id>",
+)
+
 api.add_resource(RatingListResource, "/api/recipes/<int:recipe_id>/ratings")
 api.add_resource(RatingResource, "/api/recipes/<int:recipe_id>/ratings/<int:rating_id>")
 
