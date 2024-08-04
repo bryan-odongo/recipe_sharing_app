@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask_restful import Resource, reqparse
 from models.user import UserModel
 from flask_jwt_extended import (
@@ -169,8 +170,12 @@ class LoginResource(Resource):
 
         user = UserModel.get_user_by_email(data["email"])
         if user and user.check_password(data["password"]):
-            access_token = create_access_token(identity=user.id)
-            refresh_token = create_refresh_token(identity=user.id)
+            access_token = create_access_token(
+                identity=user.id, expires_delta=timedelta(hours=1)
+            )
+            refresh_token = create_refresh_token(
+                identity=user.id, expires_delta=timedelta(hours=1)
+            )
             return {
                 "access_token": access_token,
                 "refresh_token": refresh_token,
