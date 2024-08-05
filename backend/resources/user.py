@@ -375,11 +375,11 @@ class UserResource(Resource):
         try:
             updated_user = UserModel.update_user(
                 user_id,
-                data["firstname"],
-                data["lastname"],
-                data["password"],
-                data["email"],
-                data["is_admin"],
+                firstname=data["firstname"],
+                lastname=data["lastname"],
+                password=data["password"],
+                email=data["email"],
+                is_admin=data["is_admin"],
             )
             if updated_user:
                 return updated_user.json()

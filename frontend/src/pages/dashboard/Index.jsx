@@ -1,7 +1,8 @@
 import React from "react";
+import Layout from "../../components/Layout/Layout";
 
 function DashboardPage() {
-  return <div>DashboardPage</div>;
+  return <Layout>DashboardPage</Layout>;
 }
 
 export default DashboardPage;

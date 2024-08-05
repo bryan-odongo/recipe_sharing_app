@@ -64,27 +64,27 @@ api.add_resource(
     IngredientResource, "/api/recipes/<int:recipe_id>/ingredients/<int:ingredient_id>"
 )
 # comments
-api.add_resource(CommentListResource, "/api/recipes/<int:recipe_id>/comments")
-api.add_resource(
-    CommentResource, "/api/recipes/<int:recipe_id>/comments/<int:comment_id>"
-)
+# api.add_resource(CommentListResource, "/api/recipes/<int:recipe_id>/comments")
+# api.add_resource(
+#     CommentResource, "/api/recipes/<int:recipe_id>/comments/<int:comment_id>"
+# )
 # responses
-api.add_resource(
-    CommentResponseListResource,
-    "/api/recipes/<int:recipe_id>/comments/<int:comment_id>/responses",
-)
-api.add_resource(
-    CommentResponseResource,
-    "/api/recipes/<int:recipe_id>/comments/<int:comment_id>/responses/<int:response_id>",
-)
+# api.add_resource(
+#     CommentResponseListResource,
+#     "/api/recipes/<int:recipe_id>/comments/<int:comment_id>/responses",
+# )
+# api.add_resource(
+#     CommentResponseResource,
+#     "/api/recipes/<int:recipe_id>/comments/<int:comment_id>/responses/<int:response_id>",
+# )
 # ratings
-api.add_resource(RatingListResource, "/api/recipes/<int:recipe_id>/ratings")
-api.add_resource(RatingResource, "/api/recipes/<int:recipe_id>/ratings/<int:rating_id>")
+# api.add_resource(RatingListResource, "/api/recipes/<int:recipe_id>/ratings")
+# api.add_resource(RatingResource, "/api/recipes/<int:recipe_id>/ratings/<int:rating_id>")
 # other images
-api.add_resource(OtherRecipeImageListResource, "/api/recipes/<int:recipe_id>/images")
-api.add_resource(
-    OtherRecipeImageResource, "/api/recipes/<int:recipe_id>/images/<int:image_id>"
-)
+# api.add_resource(OtherRecipeImageListResource, "/api/recipes/<int:recipe_id>/images")
+# api.add_resource(
+#     OtherRecipeImageResource, "/api/recipes/<int:recipe_id>/images/<int:image_id>"
+# )
 
 
 # Test route
