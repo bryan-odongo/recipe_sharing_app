@@ -1,5 +1,7 @@
-from . import db, validates, re, datetime
-
+from sqlalchemy.orm import validates
+from datetime import datetime
+import re
+from backend.models import db
 
 class Recipe(db.Model):
     __tablename__ = 'recipes'
@@ -13,15 +15,15 @@ class Recipe(db.Model):
     cook_time = db.Column(db.Integer, nullable=False)
     servings = db.Column(db.Integer, nullable=False)
     diet = db.Column(db.String, nullable=False)
-    image = db.Column(db.String, nullable=False)
+    image_url = db.Column(db.String, nullable=False)
     skill_level = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 
-    user = db.relationship('User', back_populates='recipes')
-    ingredient = db.relationship('Ingredient', back_populates='recipes')
-    image = db.relationship('Image', back_populates='recipes')
+    user = db.relationship('User', back_populates='recipe')
+    ingredient = db.relationship('Ingredient', back_populates='recipe')
+    image = db.relationship('Image', back_populates='recipe')
 
-    @validates('title', 'description', 'instructions', 'country', 'diet', 'image')
+    @validates('title', 'description', 'instructions', 'country', 'diet')
     def validate_strings(self, key, value):
         if not value or not isinstance(value, str):
             raise ValueError(f'{key} must be a non-empty string.')
@@ -59,7 +61,7 @@ class Recipe(db.Model):
             'cook_time': self.cook_time,
             'servings': self.servings,
             'diet': self.diet,
-            'image': self.image,
+            'image_url': self.image_url,
             'skill_level': self.skill_level,
             'created_at': self.created_at
         }

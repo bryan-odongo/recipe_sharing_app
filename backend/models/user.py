@@ -1,8 +1,7 @@
-from . import db
-from .recipes import Recipe
+from backend.models import db
 
 class User(db.Model):
-    __tablename__ = 'recipes'
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
 
-    recipes = db.relationship('Recipe', back_populates='user')
+    recipe = db.relationship('Recipe', back_populates='user')

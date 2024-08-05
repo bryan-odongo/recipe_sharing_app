@@ -1,5 +1,3 @@
-"""Flask config"""
-
 import os
 from cryptography.fernet import Fernet
 
@@ -7,7 +5,7 @@ def generate_key():
     return Fernet.generate_key().decode()
 
 class Config:
-    SECRET_KEY = generate_key()
+    SECRET_KEY = os.getenv('SECRET_KEY', generate_key())
     SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

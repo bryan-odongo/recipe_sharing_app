@@ -1,4 +1,5 @@
-from . import db, validates
+from backend.models import db
+from sqlalchemy.orm import validates
 
 class CookingTips(db.Model):
     __tablename__ = 'cookingtips'

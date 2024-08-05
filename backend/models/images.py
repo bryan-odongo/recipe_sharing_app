@@ -1,9 +1,9 @@
-from . import db
+from backend.models import db
 
 class Image(db.Model):
     __tablename__ = 'images'
     id = db.Column(db.Integer, primary_key=True)
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes'), nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'), nullable=False)
     image_url = db.Column(db.String)
 
     recipe = db.Relationship('Recipe', back_populates='images')
