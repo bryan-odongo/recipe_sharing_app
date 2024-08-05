@@ -4,36 +4,33 @@ import {
   BiLockOpenAlt,
   BiSearch,
   BiSolidDashboard,
-  BiUser,
   BiUserCircle,
-  BiWindowClose,
 } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
 
-import logo from "../../assets/imgs/logo.jpg";
 import { useAuth } from "../../contexts/userContext";
 import clsx from "clsx";
 
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, isSearching, setIsSearching } = useAuth();
   return (
-    <header className="bg-white shadow-md h-[5rem] overflow-y-hidden sticky top-0 z-50 grid items-center">
-      <div className="container mx-auto py-3 flex justify-between items-center">
+    <header className="bg-white shadow-md h-[4rem] overflow-y-hidden sticky top-0 z-50 grid items-center">
+      <div className="w-full lg:px-12 xl:container mx-auto py-3 flex justify-between items-center">
         <div className="flex items-center">
           <NavLink
             onClick={() => setIsSearching(false)}
             to="/"
-            className="text-xl font-bold text-green-600 rounded-lg border-2 border-green-600 px-2.5 py-1.5"
+            className="lg:text-base xl:text-lg font-bold text-green-600 rounded-lg border-2 border-green-600 px-2.5 py-1.5"
           >
             {/* <img src={logo} alt="" className="h- w-64" /> */}
             RecipeHaven
           </NavLink>
         </div>
-        <div className="relative group flex items-center w-[40%]">
+        <div className="relative group flex items-center lg:w-[30%] xl:w-[40%]">
           <input
             type="text"
             className={clsx(
-              "w-full px-4 py-2 border rounded-lg",
+              "w-full px-4 py-2.5 border rounded-lg text-sm",
               isSearching &&
                 "focus:outline-none focus:ring-2 focus:ring-green-400"
             )}
@@ -54,7 +51,7 @@ const Header = () => {
             </span>
           )}
         </div>
-        <nav className="flex items-center space-x-4 [&_a]:font-semibold">
+        <nav className="flex items-center space-x-4 [&_a]:text-sm [&_a]:font-semibold">
           <NavLink
             onClick={() => setIsSearching(false)}
             to="/recipes"
@@ -79,11 +76,13 @@ const Header = () => {
                 onClick={() => setIsSearching(false)}
                 to="/dashboard"
                 className={({ isActive }) =>
-                  isActive ? "nav-link-active" : "nav-link"
+                  isActive
+                    ? "nav-link-active flex items-center justify-center"
+                    : "nav-link flex items-center justify-center"
                 }
               >
                 <BiSolidDashboard className="inline-block mr-1" />
-                Dashboard
+                <span>Dashboard</span>
               </NavLink>
               <NavLink
                 onClick={() => setIsSearching(false)}
@@ -91,7 +90,7 @@ const Header = () => {
                 className={({ isActive }) =>
                   isActive
                     ? "nav-link-active flex items-center justify-center"
-                    : "nav-link "
+                    : "nav-link flex items-center justify-center"
                 }
               >
                 <BiUserCircle className="inline-block mr-1 text-2xl" />
@@ -121,14 +120,16 @@ const Header = () => {
             </>
           )}
           <NavLink
-            onClick={() => setIsSearching(false)}
             to={isLoggedIn ? "/" : "/auth/login"}
             className={({ isActive }) =>
               isActive
                 ? "flex group items-center justify-center space-x-2 text-gray-800 border border-green-600 px-4 py-1.5 rounded-2xl"
                 : "flex group items-center justify-center space-x-2 text-gray-800 hover:text-gray-600 border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"
             }
-            onClick={() => setIsLoggedIn(!isLoggedIn)}
+            onClick={() => {
+              setIsSearching(false);
+              setIsLoggedIn(!isLoggedIn);
+            }}
           >
             <span>{isLoggedIn ? "Logout" : "Login"}</span>
             <BiLock className="group-hover:hidden" />
