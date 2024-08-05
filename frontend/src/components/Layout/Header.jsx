@@ -21,6 +21,7 @@ const Header = () => {
       <div className="container mx-auto py-3 flex justify-between items-center">
         <div className="flex items-center">
           <NavLink
+            onClick={() => setIsSearching(false)}
             to="/"
             className="text-xl font-bold text-green-600 rounded-lg border-2 border-green-600 px-2.5 py-1.5"
           >
@@ -55,6 +56,7 @@ const Header = () => {
         </div>
         <nav className="flex items-center space-x-4 [&_a]:font-semibold">
           <NavLink
+            onClick={() => setIsSearching(false)}
             to="/recipes"
             className={({ isActive }) =>
               isActive ? "nav-link-active" : "nav-link"
@@ -63,6 +65,7 @@ const Header = () => {
             Recipes
           </NavLink>
           <NavLink
+            onClick={() => setIsSearching(false)}
             to="/cooking_tips"
             className={({ isActive }) =>
               isActive ? "nav-link-active" : "nav-link"
@@ -73,6 +76,7 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               <NavLink
+                onClick={() => setIsSearching(false)}
                 to="/dashboard"
                 className={({ isActive }) =>
                   isActive ? "nav-link-active" : "nav-link"
@@ -82,6 +86,7 @@ const Header = () => {
                 Dashboard
               </NavLink>
               <NavLink
+                onClick={() => setIsSearching(false)}
                 to="/profile"
                 className={({ isActive }) =>
                   isActive
@@ -96,6 +101,7 @@ const Header = () => {
           ) : (
             <>
               <NavLink
+                onClick={() => setIsSearching(false)}
                 to="/about_us"
                 className={({ isActive }) =>
                   isActive ? "nav-link-active" : "nav-link"
@@ -104,6 +110,7 @@ const Header = () => {
                 About Us
               </NavLink>
               <NavLink
+                onClick={() => setIsSearching(false)}
                 to="/contact_us"
                 className={({ isActive }) =>
                   isActive ? "nav-link-active" : "nav-link"
@@ -114,6 +121,7 @@ const Header = () => {
             </>
           )}
           <NavLink
+            onClick={() => setIsSearching(false)}
             to={isLoggedIn ? "/" : "/auth/login"}
             className={({ isActive }) =>
               isActive
