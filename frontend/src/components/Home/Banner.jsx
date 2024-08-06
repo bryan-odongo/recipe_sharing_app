@@ -9,7 +9,7 @@ function Banner() {
         alt="banner_bg"
         className="absolute top-0 left-0 w-full h-full object-cover"
       />
-      <div className="absolute top-[2rem] left-0 w-full h-full space-y-7 flex flex-col justify-center items-end bg-transparent px-12">
+      <div className="w-full h-full lg:px-12 xl:container mx-auto absolute top-[2rem] left-0 space-y-7 flex flex-col justify-center items-end bg-transparent">
         <div className="banner_text w-full h-fit flex justify-end items-center">
           <h1 className="w-full flex flex-col justify-items-center leading-[4rem] trac [&_span]:font-bold [&_span]:text-right [&_span]:text-[3.8rem]">
             <span className="">Fresh Flavors, Nutritional</span>
