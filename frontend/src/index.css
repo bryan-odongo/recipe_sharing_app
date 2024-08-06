@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 /* START STYLING ON THE NEXT LINE (6) */
 
@@ -38,4 +40,105 @@
 .text-stroke {
   -webkit-text-stroke: 2.5px rgb(39, 51, 42);
   color: transparent;
+}
+
+.titleText {
+  font-size: 52px;
+  font-family: 'Inter', sans-serif;
+}
+
+.main-container {
+  display: flex;
+  gap: 20px;
+}
+
+.title-container {
+  /* border: 2px solid black; */
+  width: 50%;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.info-container {
+  /* border: 2px solid black; */
+  flex: 1;
+  width: 45%;
+  background-color: #003612;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.info-container-heading {
+  /* border: 2px solid black; */
+  width: 75%;
+  margin-bottom: 50px;
+}
+
+.info-container-content {
+  /* border: 2px solid black; */
+  width: 75%;
+  margin-bottom: 10px;
+}
+
+.content-p-tags {
+  margin-bottom: 30px;
+}
+
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px; /* Space between the input fields */
+  margin-bottom: 20px; /* Space between rows */
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px; /* Space between label and input */
+}
+
+input[type="text"], input[type="password"] {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%; /* Make input take full width of the container */
+}
+
+input[type="checkbox"] {
+  margin-right: 10px; /* Space between checkbox and label */
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 20px; /* Space between checkboxes */
+  margin-bottom: 20px; /* Space below checkboxes */
+}
+
+.message-container {
+  margin-bottom: 20px; /* Space below the message input */
+}
+
+.submit-button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: green;
+  color: white;
+  cursor: pointer;
 }

@@ -84,18 +84,18 @@ const router = createBrowserRouter([
 ]);
 
 // Clerk private key
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+// const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing Publishable Key");
-}
+// if (!PUBLISHABLE_KEY) {
+//   throw new Error("Missing Publishable Key");
+// }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    {/* <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/"> */}
       <UserProvider>
         <RouterProvider router={router} />
       </UserProvider>
-    </ClerkProvider>
+    {/* </ClerkProvider> */}
   </React.StrictMode>
 );
