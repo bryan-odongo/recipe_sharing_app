@@ -7,7 +7,7 @@ function Layout({ children }) {
   return (
     <>
       <Header />
-      <Search />
+      {/* <Search /> */}
       <main>{children}</main>
       <Footer />
     </>
