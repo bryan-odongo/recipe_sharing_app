@@ -39,3 +39,14 @@
   -webkit-text-stroke: 2.5px rgb(39, 51, 42);
   color: transparent;
 }
+
+.error-page {
+  z-index: 0;
+  background-image: radial-gradient(
+    circle farthest-corner at 50% 50%,
+    #373737,
+    #001003
+  );
+  position: absolute;
+  inset: 0;
+}

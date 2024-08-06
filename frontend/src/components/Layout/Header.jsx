@@ -14,25 +14,41 @@ import clsx from "clsx";
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, isSearching, setIsSearching } = useAuth();
   return (
-    <header className="bg-white shadow-md h-[4rem] overflow-y-hidden sticky top-0 z-50 grid items-center">
-      <div className="w-full lg:px-12 xl:container mx-auto py-3 flex justify-between items-center">
+    <header className="bg-white shadow-md h-[4rem] sticky top-0 z-50 grid items-center">
+      <div
+        className={clsx(
+          "max-w-4xl xl:max-w-[73rem] w-full mx-auto py-3 flex justify-between items-center",
+          isSearching ? "" : "overflow-y-hidden"
+        )}
+      >
         <div className="flex items-center">
           <NavLink
             onClick={() => setIsSearching(false)}
             to="/"
-            className="lg:text-base xl:text-lg font-bold text-green-600 rounded-lg border-2 border-green-600 px-2.5 py-1.5"
+            className="text-[16px] xl:text-[18px] font-bold text-green-600 rounded-full border border-green-600 px-4 py-1 xl:py-1.5"
           >
             {/* <img src={logo} alt="" className="h- w-64" /> */}
             RecipeHaven
           </NavLink>
         </div>
-        <div className="relative group flex items-center lg:w-[30%] xl:w-[40%]">
+        <div className="relative group flex items-center w-[35%] xl:w-[40%]">
+          {/* Alternative search... */}
+          <div
+            className={clsx(
+              "search absolute overflow-x-hidden top-[calc(100%+6px)] rounded-lg w-full bg-red-300 will-change-auto duration-300 ease-out",
+              isSearching ? "h-fit" : "h-0"
+            )}
+          >
+            <div className="content text-sm w-full h-full flex items-center font-semibold p-4 bg-slate-50">
+              Enter search Text...
+            </div>
+          </div>
           <input
             type="text"
             className={clsx(
               "w-full px-4 py-2.5 border rounded-lg text-sm",
               isSearching &&
-                "focus:outline-none focus:ring-2 focus:ring-green-400"
+                "focus:outline-none focus:ring focus:ring-green-400"
             )}
             placeholder="Search..."
             onClick={() => setIsSearching(true)}
@@ -40,18 +56,18 @@ const Header = () => {
           {!isSearching ? (
             <BiSearch
               onClick={() => setIsSearching(true)}
-              className="absolute z-20 right-4 text-2xl group-hover:text-green-600 cursor-pointer"
+              className="absolute z-20 right-4 text-xl xl:text-2xl group-hover:text-green-600 cursor-pointer"
             />
           ) : (
             <span
               onClick={() => setIsSearching(false)}
-              className="absolute z-20 right-4 text-xl group-hover:text-red-600 cursor-pointer"
+              className="absolute z-20 right-4  text-sm xl:text-xl group-hover:text-red-600 cursor-pointer"
             >
               ❌
             </span>
           )}
         </div>
-        <nav className="flex items-center space-x-4 [&_a]:text-sm [&_a]:font-semibold">
+        <nav className="flex items-center space-x-4 [&_a]:text-[13px] xl:[&_a]:text-sm [&_a]:font-semibold">
           <NavLink
             onClick={() => setIsSearching(false)}
             to="/recipes"
@@ -120,16 +136,16 @@ const Header = () => {
             </>
           )}
           <NavLink
+            onClick={() => {
+              setIsLoggedIn(!isLoggedIn);
+              setIsSearching(false);
+            }}
             to={isLoggedIn ? "/" : "/auth/login"}
             className={({ isActive }) =>
               isActive
                 ? "flex group items-center justify-center space-x-2 text-gray-800 border border-green-600 px-4 py-1.5 rounded-2xl"
                 : "flex group items-center justify-center space-x-2 text-gray-800 hover:text-gray-600 border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"
             }
-            onClick={() => {
-              setIsSearching(false);
-              setIsLoggedIn(!isLoggedIn);
-            }}
           >
             <span>{isLoggedIn ? "Logout" : "Login"}</span>
             <BiLock className="group-hover:hidden" />
