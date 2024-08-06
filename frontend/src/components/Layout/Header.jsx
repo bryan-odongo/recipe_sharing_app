@@ -18,9 +18,7 @@ const Header = () => {
     <header className="bg-white shadow-md h-[4rem] sticky top-0 z-50 grid items-center">
       <div
         className={clsx(
-          "container mx-auto py-3 flex justify-between items-center",
-          "lg:px-8",
-          "xl:px-24",
+          "max-w-4xl xl:max-w-[73rem] w-full mx-auto py-3 flex justify-between items-center",
           isSearching ? "" : "overflow-y-hidden"
         )}
       >
