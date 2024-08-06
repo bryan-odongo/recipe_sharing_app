@@ -8,16 +8,28 @@ function Contact() {
     lastName: "",
     email: "",
     phoneNumber: "",
-    generalInquiry: true,
-    recipeAssistance: true,
-    technicalInquiry: true,
-    feedback: true,
+    generalInquiry: false,
+    recipeAssistance: false,
+    technicalInquiry: false,
+    feedback: false,
     message: ""
   })
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    // console.log(formData);
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      generalInquiry: false,
+      recipeAssistance: false,
+      technicalInquiry: false,
+      feedback: false,
+      message: ""
+    });
   }
   
   function handleChange(event) {
