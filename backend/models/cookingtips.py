@@ -1,4 +1,4 @@
-from backend.models import db
+from . import db
 from sqlalchemy.orm import validates
 
 class CookingTips(db.Model):

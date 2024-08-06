@@ -1,4 +1,4 @@
-from backend.models import db
+from . import db
 
 class Image(db.Model):
     __tablename__ = 'images'
@@ -6,7 +6,7 @@ class Image(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'), nullable=False)
     image_url = db.Column(db.String)
 
-    recipe = db.Relationship('Recipe', back_populates='images')
+    recipe = db.Relationship('Recipe', back_populates='image')
 
     def to_dict(self):
         return{

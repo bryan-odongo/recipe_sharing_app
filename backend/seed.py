@@ -1,9 +1,14 @@
+import os
+import sys
 from flask import Flask
 from faker import Faker
-from .models import db, CookingHacks, Recipe, Replies, Ingredient, Image, CookingTips, Review
-from .app import create_app
+from .models import db, CookingHacks, Recipe, Replies, Ingredient, Image, CookingTips, Review, User
 
-app = create_app('development')
+from .app import app
+from .config import config
+
+config_name = os.getenv('FLASK_CONFIG', 'default')
+app.config.from_object(config[config_name])
 
 with app.app_context():
     fake = Faker()
@@ -14,6 +19,15 @@ with app.app_context():
     user_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     review_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
+    def generate_ingredient():
+        return {
+            'name': fake.word(),
+            'quantity': f"{fake.random_int(min=1, max=500)} {fake.random_element(elements=['grams', 'cups', 'tablespoons', 'teaspoons'])}"
+        }
+
+    def generate_instructions(num_steps=5):
+        return "\n".join(f"{i+1}. {fake.sentence()}" for i in range(num_steps))
+
     def seed_recipes():
         recipes = []
         for _ in range(10):
@@ -21,14 +35,14 @@ with app.app_context():
                 user_id=fake.random_element(elements=user_ids),
                 title=fake.sentence(),
                 description=fake.text(),
-                instructions=fake.text(),
-                country=fake.country(),
-                prep_time=fake.random_int(min=1, max=120),
-                cook_time=fake.random_int(min=1, max=120),
-                servings=fake.random_int(min=1, max=10),
-                diet=fake.word(),
+                instructions=generate_instructions(),
+                country=fake.random_element(elements=['Kenyan', 'Ugandan', 'Tanzanian', 'Rwandan', 'Ethiopian']),
+                prep_time=fake.random_int(min=10, max=120),  
+                cook_time=fake.random_int(min=10, max=120),  
+                servings=fake.random_int(min=1, max=6),
+                diet=fake.random_element(elements=['Vegetarian', 'Vegan', 'Gluten-Free', 'Low-Fat']),
                 image_url=fake.image_url(),
-                skill_level=fake.word(),
+                skill_level=fake.random_element(elements=['Easy', 'Medium', 'Hard']),
                 created_at=fake.date_time_this_year()
             )
             db.session.add(recipe)
@@ -39,7 +53,7 @@ with app.app_context():
     def seed_cooking_hacks():
         for _ in range(10):
             cooking_hacks = CookingHacks(
-                content=fake.text()
+                content=fake.sentence()  
             )
             db.session.add(cooking_hacks)
         db.session.commit()

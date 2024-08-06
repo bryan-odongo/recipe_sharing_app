@@ -1,7 +1,7 @@
 from sqlalchemy.orm import validates
 from datetime import datetime
 import re
-from backend.models import db
+from . import db
 
 class Recipe(db.Model):
     __tablename__ = 'recipes'

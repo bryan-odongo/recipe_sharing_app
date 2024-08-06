@@ -1,5 +1,5 @@
 from sqlalchemy.orm import validates
-from backend.models import db
+from . import db
 
 class Ingredient(db.Model):
     __tablename__ = 'ingredients'
@@ -11,9 +11,9 @@ class Ingredient(db.Model):
     recipe = db.Relationship('Recipe', back_populates='ingredient')
 
     @validates('name')
-    def validate_name(self, value):
-        if not value or not isinstance(value, str):
-            raise ValueError('Name must be a non-empty string')
+    def validate_name(self, key, value):
+        if not value or len(value) < 3:
+            raise ValueError('Name must be at least 3 characters long.')
         return value
 
     def to_dict(self):

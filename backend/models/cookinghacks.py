@@ -1,4 +1,4 @@
-from backend.models import db
+from . import db
 from sqlalchemy.orm import validates
 
 class CookingHacks(db.Model):
@@ -7,9 +7,9 @@ class CookingHacks(db.Model):
     content = db.Column(db.String, nullable=False)
 
     @validates('content')
-    def validate_content(self, value):
-        if not value or not isinstance(value, str):
-            raise ValueError("Content must be a non-empty string")
+    def validate_content(self, key, value):
+        if not value or len(value) < 10:
+            raise ValueError("Content must be at least 10 characters long.")
         return value
 
     def to_dict(self):
