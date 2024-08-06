@@ -27,7 +27,7 @@ function WorldWide() {
             width="200"
             height="200"
             xmlns="http://www.w3.org/2000/svg"
-            className="absolute z-30 left-[56%] top-8 xl:left-[59%] xl:top-24"
+            className="absolute z-30 left-[56%] top-8 xl:-translate-y-16 xl:left-[59%] xl:top-24"
           >
             <path
               d="M10 150 Q 50 50, 100 150 T 190 150"

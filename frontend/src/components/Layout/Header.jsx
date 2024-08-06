@@ -25,7 +25,7 @@ const Header = () => {
           <NavLink
             onClick={() => setIsSearching(false)}
             to="/"
-            className="text-lg xl:text-xl font-bold text-green-600 rounded-lg border-2 border-green-600 px-2.5 py-1 xl:py-1.5"
+            className="text-[16px] xl:text-[18px] font-bold text-green-600 rounded-full border border-green-600 px-4 py-1 xl:py-1.5"
           >
             {/* <img src={logo} alt="" className="h- w-64" /> */}
             RecipeHaven
@@ -39,7 +39,7 @@ const Header = () => {
               isSearching ? "h-fit" : "h-0"
             )}
           >
-            <div className="content w-full h-full flex items-center font-semibold p-4 bg-slate-50">
+            <div className="content text-sm w-full h-full flex items-center font-semibold p-4 bg-slate-50">
               Enter search Text...
             </div>
           </div>
@@ -61,13 +61,13 @@ const Header = () => {
           ) : (
             <span
               onClick={() => setIsSearching(false)}
-              className="absolute z-20 right-4  text-lg xl:text-xl group-hover:text-red-600 cursor-pointer"
+              className="absolute z-20 right-4  text-sm xl:text-xl group-hover:text-red-600 cursor-pointer"
             >
               ❌
             </span>
           )}
         </div>
-        <nav className="flex items-center space-x-4 [&_a]:text-sm [&_a]:font-semibold">
+        <nav className="flex items-center space-x-4 [&_a]:text-[13px] xl:[&_a]:text-sm [&_a]:font-semibold">
           <NavLink
             onClick={() => setIsSearching(false)}
             to="/recipes"

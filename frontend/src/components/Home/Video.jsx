@@ -105,7 +105,7 @@ function PromoVideo() {
       </div>
       <div className="absolute z-30 inset-0  flex justify-center">
         <div className="grid grid-cols-4 grid-rows-4  w-full h-full max-w-4xl xl:max-w-[73rem]">
-          <div className="right col-start-4 text-white py-4">
+          <div className="right pl-24 xl:pl-2 col-start-3 col-span-2 xl:col-start-4 text-white py-4">
             <div className="flex justify-between items-center w-full">
               <span className="border border-white rounded-xl px-3 py-1">
                 Word on the Streets
@@ -132,7 +132,7 @@ function PromoVideo() {
             <img
               src={vidImg}
               className="h-10 w-10 rounded-full object-cover"
-              alt=""
+              alt="vidImg"
             />
             <div className="relative w-fit border-t-2 space-y-3 mt-4 border-white">
               <p className="leading-tight text-xs max-w-[15rem] pt-4">
