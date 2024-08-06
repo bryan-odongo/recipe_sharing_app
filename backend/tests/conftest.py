@@ -5,7 +5,7 @@ import os
 import pytest
 from faker import Faker
 
-# Add the parent directory to the Python path
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from models import db, User, Recipe
@@ -15,7 +15,7 @@ fake = Faker()
 
 @pytest.fixture(scope='module')
 def app():
-    app = create_app('testing')  # Ensure you have a 'testing' config for your app
+    app = create_app('testing')  
     with app.app_context():
         yield app
 

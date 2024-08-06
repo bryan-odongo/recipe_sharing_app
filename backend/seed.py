@@ -1,7 +1,7 @@
 from flask import Flask
-from models import db, CookingHacks, Recipe, Replies, Ingredient, Image, CookingTips, Review
-from app import create_app
 from faker import Faker
+from .models import db, CookingHacks, Recipe, Replies, Ingredient, Image, CookingTips, Review
+from .app import create_app
 
 app = create_app('development')
 
@@ -88,8 +88,7 @@ with app.app_context():
         db.session.commit()
         print("Replies seeded successfully.")
 
-    
-    seed_recipes()
+    recipe_ids = seed_recipes()
     seed_cooking_hacks()
     seed_cooking_tips()
     seed_images(recipe_ids)
