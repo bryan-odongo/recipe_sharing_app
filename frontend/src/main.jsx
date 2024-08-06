@@ -93,8 +93,12 @@ if (!PUBLISHABLE_KEY) {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <AuthProvider>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    <UserProvider>
       <RouterProvider router={router} />
+    </UserProvider>
     </ClerkProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

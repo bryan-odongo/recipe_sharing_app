@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "../../components/Layout/Layout";
 import loginBanner from "../../assets/imgs/login-Signup.jpg"; 
+import { NavLink } from "react-router-dom";
 
 function Login() {
 
@@ -19,8 +20,13 @@ function Login() {
             Home &gt; My Account
           </div>
           <div className="mb-4 pb-2 flex space-x-5">
-            <button className="text-gray-500 active:border-b-2 active:border-black active:font-bold hover:text-green-600">Sign In</button>
-            <button className="text-gray-500 active:border-b-2 active:border-black active:font-bold hover:text-green-600">Register</button>
+            <button
+            className="font-bold border-b-2 border-black pb-1">
+              Sign In</button>
+            <NavLink to='/register'
+            className="text-gray-500 active:border-b-2 active:border-black active:font-bold hover:text-green-600">
+            Register
+            </NavLink>
           </div>
           <form on onSubmit={handleSubmit}>
             <div className="mb-4">

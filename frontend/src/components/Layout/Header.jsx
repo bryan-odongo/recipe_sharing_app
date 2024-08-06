@@ -120,9 +120,10 @@ const Header = () => {
               </NavLink>
             </>
           )}
+            {/*to={isLoggedIn ? "/" : "/login"}*/}
           <NavLink
             onClick={() => setIsSearching(false)}
-            to={isLoggedIn ? "/" : "/auth/login"}
+            to="/login"
             className={({ isActive }) =>
               isActive
                 ? "flex group items-center justify-center space-x-2 text-gray-800 border border-green-600 px-4 py-1.5 rounded-2xl"

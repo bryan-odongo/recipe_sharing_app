@@ -1,16 +1,24 @@
 import React from 'react';
-import loginBanner from '../../assets/imgs/login-Signup.jpg'; // Ensure this path is correct
+import loginBanner from '../../assets/imgs/login-Signup.jpg';
+import { NavLink } from 'react-router-dom';
+import Layout from '../../components/Layout/Layout';
 const RegisterPage = () => {
+  //add register logic and form submission
+  // finalize on design
   return (
+    <Layout>
     <div className="flex h-screen">
-      <div className="w-full md:w-[45%] bg-gray-100 flex items-center justify-center">
+      <div className="w-[45%] bg-gray-100 flex items-center justify-center">
         <div className="w-full max-w-md">
           <h2 className="text-2xl font-bold mb-4">My Account</h2>
           <div className="text-gray-500 mb-6">
             Home &gt; My Account
           </div>
           <div className="border-b mb-4 pb-2 flex justify-between">
-            <button className="text-gray-500">Sign In</button>
+            <NavLink to="/login"
+              className="text-gray-500">
+              Sign In
+            </NavLink>
             <button className="font-bold border-b-2 border-black pb-1">Register</button>
           </div>
           <form>
@@ -93,7 +101,7 @@ const RegisterPage = () => {
           </form>
         </div>
       </div>
-      <div className="hidden md:block md:w-[55%]">
+      <div className=" md:block md:w-[60%]">
         <img
           className="object-cover h-full w-full"
           src={loginBanner}
@@ -101,6 +109,7 @@ const RegisterPage = () => {
         />
       </div>
     </div>
+    </Layout>
   );
 };
 
