@@ -10,7 +10,6 @@ import { NavLink } from "react-router-dom";
 
 import { useAuth } from "../../contexts/userContext";
 import clsx from "clsx";
-import Search from "./Search";
 
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, isSearching, setIsSearching } = useAuth();

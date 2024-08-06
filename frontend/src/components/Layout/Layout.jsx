@@ -9,7 +9,7 @@ function Layout({ children }) {
       <Header />
       {/* <Search /> */}
       <main>{children}</main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

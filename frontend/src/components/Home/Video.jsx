@@ -9,7 +9,7 @@ import {
 } from "react-icons/bi";
 import { FaQuoteLeft } from "react-icons/fa";
 
-import advideo from "../../assets/video/digital.mp4";
+import promo from "../../assets/video/promo.mp4";
 import vidImg from "../../assets/imgs/sub1.jpg";
 
 function PromoVideo() {
@@ -70,7 +70,7 @@ function PromoVideo() {
           loop
           muted
         >
-          <source src={advideo} type="video/mp4" />
+          <source src={promo} type="video/mp4" />
         </video>
         <div className="controlsContainer flex absolute z-20 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
           <div className="controls flex">
