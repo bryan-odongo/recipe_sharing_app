@@ -19,12 +19,6 @@ with app.app_context():
     user_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     review_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-    def generate_ingredient():
-        return {
-            'name': fake.word(),
-            'quantity': f"{fake.random_int(min=1, max=500)} {fake.random_element(elements=['grams', 'cups', 'tablespoons', 'teaspoons'])}"
-        }
-
     def generate_instructions(num_steps=5):
         return "\n".join(f"{i+1}. {fake.sentence()}" for i in range(num_steps))
 
