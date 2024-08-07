@@ -120,4 +120,4 @@ class RecipeByID(Resource):
             return response
         except Exception as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to delete recipe", "details": str(e)}, 500))
+            return make_response(jsonify({"error": "Unable to delete recipe", "details": str(e)}), 500)
