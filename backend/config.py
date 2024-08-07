@@ -1,19 +1,12 @@
-mssql = {"host": "dbhost", "user": "dbuser", "passwd": "dbPwd", "db": "db"}
+import os
 
-postgresql = {
-    "host": "0.0.0.0",
-    "user": "postgres",
-    "passwd": "asdf",
-    "db": "dev",
-}
-
-sqliteConfig = "sqlite:///recipes_app.db"
-
-mssqlConfig = (
-    "mssql+pyodbc://{}:{}@{}:1433/{}?driver=SQL+Server+Native+Client+10.0".format(
-        mssql["user"], mssql["passwd"], mssql["host"], mssql["db"]
-    )
-)
-postgresqlConfig = "postgresql+psycopg2://{}:{}@{}/{}".format(
-    postgresql["user"], postgresql["passwd"], postgresql["host"], postgresql["db"]
-)
+class Config:
+    PROPAGATE_EXCEPTIONS = True
+    API_TITLE = "recipe REST API"
+    API_VERSION = "v1"
+    OPENAPI_VERSION = "3.0.3"
+    OPENAPI_URL_PREFIX = "/"
+    OPENAPI_SWAGGER_UI_PATH = "/swagger-ui"
+    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///recipe_app.db")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
