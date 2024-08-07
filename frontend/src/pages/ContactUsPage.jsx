@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import emailjs from '@emailjs/browser';
 import Layout from "../components/Layout/Layout";
 
 function Contact() {
 
+  const [selectedInquiry, setSelectedInquiry] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -19,30 +21,78 @@ function Contact() {
     event.preventDefault();
     // console.log(formData);
 
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      generalInquiry: false,
-      recipeAssistance: false,
-      technicalInquiry: false,
-      feedback: false,
-      message: ""
-    });
+    const emailParams = {
+      from_name: formData.firstName + " " + formData.lastName,
+      from_email: formData.email,
+      phone_number: formData.phoneNumber,
+      message: formData.message,
+      subject: selectedInquiry,
+    };
+
+    emailjs
+      .send("service_wm5ej6r", "template_6u16bp6", emailParams, {
+        publicKey: "barod1VE6oGwO1rac",
+      })
+      .then(
+        (response) => {
+          console.log('Email sent successfully:', response);
+
+          setFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phoneNumber: "",
+            generalInquiry: false,
+            recipeAssistance: false,
+            technicalInquiry: false,
+            feedback: false,
+            message: ""
+          });
+
+          setSelectedInquiry("");
+        })
+        .catch(error => {
+          console.error('Error sending email:', error);
+        });
+
+    // setFormData({
+    //   firstName: "",
+    //   lastName: "",
+    //   email: "",
+    //   phoneNumber: "",
+    //   generalInquiry: false,
+    //   recipeAssistance: false,
+    //   technicalInquiry: false,
+    //   feedback: false,
+    //   message: ""
+    // });
   }
   
   function handleChange(event) {
     const key = event.target.id
     const value = event.target.type === "checkbox" ? event.target.checked : event.target.value
     
-    setFormData({ 
-      ...formData, 
-      [key]: value
-    })
+    if (event.target.type === "checkbox" && value) {
+      setFormData({
+        ...formData,
+        generalInquiry: false,
+        recipeAssistance: false,
+        technicalInquiry: false,
+        feedback: false,
+        [key]: value
+      });
+      setSelectedInquiry(event.target.nextSibling.textContent.trim());
+    }
+    else {
+      setFormData({ 
+        ...formData, 
+        [key]: value
+      })
+    }
   }
   
   console.log(formData)
+  console.log(selectedInquiry)
 
   return (
     <Layout>
@@ -117,7 +167,7 @@ function Contact() {
                 <input
                   type="checkbox"
                   id="generalInquiry"
-                  value={formData.generalInquiry}
+                  checked={formData.generalInquiry}
                   onChange={handleChange}
                 />
                 General Inquiry
@@ -127,7 +177,7 @@ function Contact() {
                 <input
                   type="checkbox"
                   id="recipeAssistance"
-                  value={formData.recipeAssistance}
+                  checked={formData.recipeAssistance}
                   onChange={handleChange}
                 />
                 Recipe Assistance
@@ -137,7 +187,7 @@ function Contact() {
                 <input
                   type="checkbox"
                   id="technicalInquiry"
-                  value={formData.technicalInquiry}
+                  checked={formData.technicalInquiry}
                   onChange={handleChange}
                 />
                 Technical Inquiry
@@ -147,7 +197,7 @@ function Contact() {
                 <input
                   type="checkbox"
                   id="feedback"
-                  value={formData.feedback}
+                  checked={formData.feedback}
                   onChange={handleChange}
                 />
                 Feedback
