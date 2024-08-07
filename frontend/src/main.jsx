@@ -88,7 +88,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ClerkProvider
       publishableKey={PUBLISHABLE_KEY}
-      afterSignOutUrl="/auth/login"
+      afterSignOutUrl="/"
+      signInFallbackRedirectUrl={"/recipes"}
+      signUpFallbackRedirectUrl={"/auth/login"}
     >
       <UserProvider>
         <RouterProvider router={router} />
