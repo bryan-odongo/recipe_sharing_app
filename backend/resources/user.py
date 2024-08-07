@@ -3,6 +3,7 @@ from database import db
 from models import User
 from flask import jsonify
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 BLANK_ERROR = "'{}' cannot be blank."
 USER_ALREADY_EXISTS = "A user with that username or email already exists."
@@ -45,23 +46,89 @@ class UserRegister(Resource):
             db.session.add(user)
             db.session.commit()
         except ValueError as e:
-            return {"message":{"message": str(e)}}, 400
+            return {"message": str(e)}, 400
         except IntegrityError:
             db.session.rollback()
-            return {"message":{"message": USER_ALREADY_EXISTS}}, 400
+            return {"message": USER_ALREADY_EXISTS}, 400
         except SQLAlchemyError as e:
             db.session.rollback()
-            return {"message":{"message": str(e)}}, 500
+            return {"message": str(e)}, 500
 
-        return {"message":{"message": CREATED_SUCCESSFULLY}}, 201
+        return {"message": CREATED_SUCCESSFULLY}, 201
 
 class Profile(Resource):
-    def get(self, user_id):
-        user = User.query.get_or_404(user_id)
+    @jwt_required()
+    def get(self):
+        current_user = get_jwt_identity()
+        user = User.query.get_or_404(current_user)
         return jsonify(user.to_dict())
 
-    def delete(self, user_id):
-        user = User.query.get_or_404(user_id)
+    @jwt_required()
+    def delete(self):
+        current_user = get_jwt_identity()
+        user = User.query.get_or_404(current_user)
         db.session.delete(user)
         db.session.commit()
-        return jsonify({"message": "user deleted"}), 200
+        return {"message": "User deleted"}, 200
+
+    @jwt_required()
+    def put(self):
+        current_user = get_jwt_identity()
+        user = User.query.get_or_404(current_user)
+        
+        update_parser = reqparse.RequestParser()
+        update_parser.add_argument("username", type=str, required=False)
+        update_parser.add_argument("email", type=str, required=False)
+        update_parser.add_argument("first_name", type=str, required=False)
+        update_parser.add_argument("last_name", type=str, required=False)
+        update_parser.add_argument("password", type=str, required=False)
+        update_parser.add_argument("bio", type=str, required=False)
+        
+        data = update_parser.parse_args()
+        try:
+            if data['username']:
+                user.username = data['username']
+            if data['email']:
+                user.email = data['email']
+            if data['first_name']:
+                user.first_name = data['first_name']
+            if data['last_name']:
+                user.last_name = data['last_name']
+            if data['bio']:
+                user.last_name = data['bio']
+            if data['password']:
+                user.password_hash = data["password"]
+        
+
+            db.session.commit()
+
+        except ValueError as e:
+            return {"message": str(e)}, 400
+        except IntegrityError:
+            db.session.rollback()
+            return {"message": USER_ALREADY_EXISTS}, 400
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return {"message": str(e)}, 500
+
+        return {"message": "User updated successfully"}, 200
+
+class Login(Resource):
+    _login_parser = reqparse.RequestParser()
+    _login_parser.add_argument(
+        "username", type=str, required=True, help=BLANK_ERROR.format("username")
+    )
+    _login_parser.add_argument(
+        "password", type=str, required=True, help=BLANK_ERROR.format("password")
+    )
+
+    def post(self):
+        data = self._login_parser.parse_args()
+        user = User.query.filter_by(username=data["username"]).first()
+
+        if user and user.authenticate(data["password"]):
+            access_token = create_access_token(identity=user.id)
+            return {"access_token": access_token}, 200
+        return {"message": INVALID_CREDENTIALS}, 401
+
+

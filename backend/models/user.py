@@ -28,6 +28,8 @@ class User(db.Model, SerializerMixin):
     is_admin = db.Column(db.Boolean, default=False)
     
     # recipes = db.relationship('Recipe', back_populates='user')
+    # ratings = db.relationship('Rating', back_populates='user')
+    # bookmarks = db.relationship('Bookmark', back_populates='user')
 
     @hybrid_property
     def password_hash(self):
