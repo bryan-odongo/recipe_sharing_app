@@ -7,7 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 function ErrorPage() {
   const [counter, setCounter] = useState(10);
   const navigate = useNavigate();
-  // const history = useHistory();
 
   useEffect(() => {
     const timer = setInterval(() => {
