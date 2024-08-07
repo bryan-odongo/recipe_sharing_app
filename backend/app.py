@@ -23,8 +23,9 @@ from backend.models.review import Review
 from flask_restful import Api
 api = Api(app)
 
-from backend.resources.recipes_resource import RecipeResource
+from backend.resources.recipes_resource import RecipeResource, RecipeByID
 api.add_resource(RecipeResource, '/recipes', endpoint='recipes')
+api.add_resource(RecipeByID, '/recipes/<int:id>', endpoint='recipes_by_id')
 
 if __name__ == '__main__':
     try:

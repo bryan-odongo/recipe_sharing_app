@@ -21,7 +21,7 @@ class Recipe(db.Model):
 
     user = db.relationship('User', back_populates='recipe')
     ingredient = db.relationship('Ingredient', back_populates='recipe')
-    image = db.relationship('Image', back_populates='recipe')
+    image = db.relationship('Image', back_populates='recipe', cascade='all, delete-orphan')
 
     @validates('title', 'description', 'instructions', 'country', 'diet')
     def validate_strings(self, key, value):
@@ -63,7 +63,7 @@ class Recipe(db.Model):
             'diet': self.diet,
             'image_url': self.image_url,
             'skill_level': self.skill_level,
-            'created_at': self.created_at
+            'created_at': self.created_at.isoformat() if self.created_at else None
         }
 
     def __repr__(self):
