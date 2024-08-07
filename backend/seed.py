@@ -22,7 +22,6 @@ with app.app_context():
     db.session.add_all(users)
     db.session.commit()
     
-    # Seed Recipes
     recipes = [
         Recipe(
             user_id=1,
@@ -36,7 +35,7 @@ with app.app_context():
             diet='Vegetarian',
             image_url='http://example.com/spaghetti.jpg',
             skill_level='Medium',
-            created_at=datetime.strptime('2024-08-07T00:00:00', '%Y-%m-%dT%H:%M:%S')  # Convert string to datetime
+            created_at=datetime.strptime('2024-08-07T00:00:00', '%Y-%m-%dT%H:%M:%S')  
         ),
         Recipe(
             user_id=2,
@@ -50,7 +49,7 @@ with app.app_context():
             diet='Non-Vegetarian',
             image_url='http://example.com/curry.jpg',
             skill_level='Hard',
-            created_at=datetime.strptime('2024-08-07T00:00:00', '%Y-%m-%dT%H:%M:%S')  # Convert string to datetime
+            created_at=datetime.strptime('2024-08-07T00:00:00', '%Y-%m-%dT%H:%M:%S')  
         ),
     ]
     db.session.add_all(recipes)
