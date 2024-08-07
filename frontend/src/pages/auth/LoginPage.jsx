@@ -1,53 +1,65 @@
 import React from "react";
 import Layout from "../../components/Layout/Layout";
-import loginBanner from "../../assets/imgs/login-Signup.jpg"; 
+import loginBanner from "../../assets/imgs/singup-login.jpg"; 
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const { login } = React.useContext(AuthContext);
+  const [userDetails, setUserDetails] = React.useState({
+    email: "",
+    password: "",
+  })
+  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
-    // Handle form submission
+    //login(userDetails);
+    //navigate("/recipes");
   }
 
    return (
     <Layout>
-    <div className="flex h-screen">
-      <div className="w-[45%] bg-slate-50 flex items-center justify-center">
-        <div className="w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-4">My Account</h2>
-          <div className="text-gray-500 mb-6">
+    <div className="flex h-screen max-w-screen justify-center items-center bg-cover  bg-no-repeat"
+     style={{backgroundImage: `url(${loginBanner})`}}>
+      <div className="w-[45%]  bg-black bg-opacity-60 rounded-xl shadow-xl max-h-screen flex items-center justify-center">
+        <div className="w-full mt-2 mb-5 text-white max-w-md">
+          <h2 className="text-2xl text-white font-bold mb-4">My Account</h2>
+          <div className=" mb-6">
             Home &gt; My Account
           </div>
-          <div className="mb-4 pb-2 flex space-x-5">
+          <div className="mb-4 pb-2 border-b-2 border-gray-300 flex justify-between">
             <button
-            className="font-bold border-b-2 border-black pb-1">
+            className="font-bold border-b-4 border-white pb-1 p-1 rounded-lg hover:bg-green-500">
               Sign In</button>
             <NavLink to='/register'
-            className="text-gray-500 active:border-b-2 active:border-black active:font-bold hover:text-green-600">
+            className=" hover:bg-green-500 p-1 rounded-lg font-bold">
             Register
             </NavLink>
           </div>
           <form on onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="email">
+              <label className="block  mb-2" htmlFor="email">
                 Username or email address*
               </label>
               <input
-                className=" border border-black bg-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className=" border border-black bg-gray-200 rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
                 id="email"
                 type="email"
+                name="email"
                 placeholder="Enter your email"
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="password">
+              <label className="block  mb-2" htmlFor="password">
                 Password*
               </label>
               <input
-                className="border border-black bg-gray-200 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="border border-black bg-gray-200 rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
                 id="password"
                 type="password"
+                name="password"
                 placeholder="Enter your password"
               />
             </div>
@@ -57,10 +69,10 @@ function Login() {
                   className="form-checkbox h-5 w-5 text-green-600"
                   type="checkbox"
                 />
-                <span className="ml-2 text-gray-700">Remember me</span>
+                <span className="ml-2 ">Remember me</span>
               </label>
               <a
-                className="inline-block align-baseline border-b-2 border-black font-bold text-sm text-gray-600 hover:text-green-800"
+                className="inline-block align-baseline border-b-2 border-white font-bold text-sm  hover:text-green-500"
                 href="#"
               >
                 Forgot your Password?
@@ -76,13 +88,6 @@ function Login() {
             </div>
           </form>
         </div>
-      </div>
-      <div className="md:block md:w-[55%]">
-        <img
-          className="object-cover h-full w-full"
-          src={loginBanner}
-          alt="Food"
-        />
       </div>
     </div>
     </Layout>

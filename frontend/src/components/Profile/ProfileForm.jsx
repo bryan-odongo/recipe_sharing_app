@@ -2,7 +2,7 @@ import Select from 'react-select';
 import { countries } from 'countries-list';
 import React, { useState, useContext } from 'react'
 import FileUpload from './FileUpload';
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 
 
 const countryOptions = Object.keys(countries).map((code) => ({
@@ -72,8 +72,8 @@ function ProfileForm() {
     };
 
   return (
-    <>
-     <h2 className="text-xl text-gray-500 font-medium mb-4">My Account</h2>
+    <div className='bg-gray-200 p-6 rounded-lg'>
+     <h2 className="text-xl  text-gray-500 font-medium mb-4">My Account</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex space-x-4">
             <div className="w-1/2">
@@ -108,10 +108,10 @@ function ProfileForm() {
           <div className="mb-4 flex space-x-4">
             <div className="w-1/2">
               <label className="block text-gray-700 mb-2" htmlFor="country">
-                Contry*
+                Country*
               </label>
               <Select
-                className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="country"
                 options={countryOptions}
                 placeholder="Select your country"
@@ -140,7 +140,8 @@ function ProfileForm() {
               </select> 
             </div>
           </div>
-          <div className="mb-4">
+          <div className='flex space-x-4'>
+          <div className="mb-4 w-1/2">
             <label className="block text-gray-700 mb-2" htmlFor="username">
               Username*
             </label>
@@ -154,7 +155,7 @@ function ProfileForm() {
               placeholder="Enter your preferred username"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 w-1/2">
             <label className="block text-gray-700 mb-2" htmlFor="email">
               Email address*
             </label>
@@ -167,6 +168,7 @@ function ProfileForm() {
               onChange={handleChange}
               placeholder="Enter your email"
             />
+          </div>
           </div>
           <div className="mb-4 flex space-x-4">
             <div className="w-1/2">
@@ -225,7 +227,7 @@ function ProfileForm() {
             </button>
           </div>
         </form>
-    </>
+    </div>
   )
 }
 export default ProfileForm

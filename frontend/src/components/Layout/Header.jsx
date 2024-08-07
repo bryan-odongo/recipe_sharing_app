@@ -1,4 +1,5 @@
 import React from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   BiLock,
   BiLockOpenAlt,
@@ -17,6 +18,12 @@ import Search from "./Search";
 
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, isSearching, setIsSearching } = useAuth();
+  const { logout } = React.useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    setIsLoggedIn(false);
+  };
   return (
     <header className="bg-white shadow-md h-[4rem] sticky top-0 z-50 grid items-center">
       <div
@@ -141,17 +148,13 @@ const Header = () => {
           )}
             {/*to={isLoggedIn ? "/" : "/login"}*/}
           <NavLink
-<<<<<<< HEAD
-            onClick={() => setIsSearching(false)}
-            to="/login"
-=======
             onClick={() => {
               setIsLoggedIn(!isLoggedIn);
               setIsSearching(false);
+              //handleLogout();
             }}
-            to={isLoggedIn ? "/" : "/auth/login"}
->>>>>>> main
-            className={({ isActive }) =>
+            to={isLoggedIn ? "/" : "/login"}
+              className={({ isActive }) =>
               isActive
                 ? "flex group items-center justify-center space-x-2 text-gray-800 border border-green-600 px-4 py-1.5 rounded-2xl"
                 : "flex group items-center justify-center space-x-2 text-gray-800 hover:text-gray-600 border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"

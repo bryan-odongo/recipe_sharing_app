@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout/Layout';
-import banner from '../assets/imgs/login-Signup.jpg';
-import ProfileForm from '../components/ProfileForm';
-import PersonalRecipes from '../components/PersonalRecipes';
+import banner from '../assets/imgs/singup-login.jpg';
+import ProfileForm from '../components/Profile/ProfileForm';
+import PersonalRecipes from '../components/Profile/PersonalRecipes';
+import Settings from '../components/Profile/Settings';
+import Bookmarks from '../components/Profile/Bookmarks';
+
+
 import axios from 'axios';
 
 const ProfilePage = () => {
@@ -100,54 +104,58 @@ const handleImageChange = (e) => {
                 <p className="text-gray-600">Florida, US</p>
               </section>
               <div>
-              <p className="text-sm  bg-orange-500  font-bold py-1 px-4 rounded">
+              <p className="text-sm bg-orange-500 font-bold py-1 px-4 rounded">
                 Following (1.2k)
               </p>
               </div>
             </div>
           </div>
-          <div className="flex w-full bg-white mt-1  ">
-            <div className="w-1/4 bg-gray-300 shadow-md  mr-8 rounded-xl">
-              <div className="mt-8 space-y-6 flex flex-col h-full">
-                <button 
-                  onClick={() => handleclick('profileForm')}
-                  className={getButtonClass('profileForm')}>
-                  Bio Information
-                </button>
-                <button 
-                  onClick={() => handleclick('Bookmarks')}
-                  className={getButtonClass('Bookmarks')}>
-                  Bookmarks
-                </button>
-                <button 
-                  onClick={() => handleclick('followers')}
-                  className={getButtonClass('followers')}>
-                  Followers
-                </button>
-                <button 
-                  onClick={() => handleclick('following')}
-                  className={getButtonClass('following')}>
-                  Following
-                </button>
-                <button
-                  onClick={() => handleclick('personalRecipes')}
-                  className={getButtonClass('personalRecipes')}>
-                  Personal Recipes
-                </button>
-                <button 
-                  onClick={() => handleclick('settings')} 
-                  className={getButtonClass('settings')}>
-                  Settings
-                </button>
+          <div className="flex w-full bg-gray-100 mt-1">
+            <div className="w-1/4 bg-gray-200 shadow-md mr-6 rounded-xl">
+              <div className="mt-8 flex flex-col justify-between min-h-[calc(100vh-8rem)]">
+                <div className='space-y-6'>
+                  <button 
+                    onClick={() => handleclick('profileForm')}
+                    className={getButtonClass('profileForm')}>
+                    Bio Information
+                  </button>
+                  <button 
+                    onClick={() => handleclick('Bookmarks')}
+                    className={getButtonClass('Bookmarks')}>
+                    Bookmarks
+                  </button>
+                  <button 
+                    onClick={() => handleclick('followers')}
+                    className={getButtonClass('followers')}>
+                    Followers
+                  </button>
+                  <button 
+                    onClick={() => handleclick('following')}
+                    className={getButtonClass('following')}>
+                    Following
+                  </button>
+                  <button
+                    onClick={() => handleclick('personalRecipes')}
+                    className={getButtonClass('personalRecipes')}>
+                    Personal Recipes
+                  </button>
+                </div>
+                <div className="mt-auto inset-0 opacity-0">
+                  <button 
+                    onClick={() => handleclick('settings')} 
+                    className={getButtonClass('settings')}>
+                    Settings
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="w-2/3  p-6">
+            <div className="w-3/4 ">
               {component === 'profileForm' && <ProfileForm />}
-              {component === 'Bookmarks' && <div>Add bookmarks component</div>} {/*Dear dev complete bookmarks and add it here */}
+              {component === 'Bookmarks' && <Bookmarks />} {/*Dear Audrey, complete bookmarks and add it here */}
               {component === 'followers' && <div>Coming soon</div>}
               {component === 'following' && <div>Coming soon</div>}
               {component === 'personalRecipes' && <PersonalRecipes />}
-              {component === 'settings' && <div>What do I add in here?</div>}
+              {component === 'settings' && <Settings />}
             </div>
           </div>
         </section>
