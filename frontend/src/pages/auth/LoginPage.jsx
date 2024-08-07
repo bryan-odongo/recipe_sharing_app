@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout";
+import { SignIn } from "@clerk/clerk-react";
 
 function Login() {
-  return <Layout>Login</Layout>;
+  const [isSingIn, setIsSignIn] = useState(true);
+  return (
+    <Layout>
+      <section className="w-full min-h-[calc(100vh-156px)]">
+        <div className="bg-red-800 h-full  max-w-4xl xl:max-w-[73rem] w-full mx-auto py-3 flex justify-between items-center">
+          <SignIn signUpFallbackRedirectUrl={"/recipes"} />
+        </div>
+      </section>
+    </Layout>
+  );
 }
 
 export default Login;

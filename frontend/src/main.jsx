@@ -13,7 +13,6 @@ import ContactusPage from "./pages/ContactUsPage";
 import AboutusPage from "./pages/AboutUsPage";
 // Auth
 import LoginPage from "./pages/auth/LoginPage";
-import RegisterPage from "./pages/auth/RegisterPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 // Recipes
 import RecipesPage from "./pages/RecipesPage";
@@ -29,11 +28,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/auth/register",
-    element: <RegisterPage />,
     errorElement: <ErrorPage />,
   },
   {
@@ -92,7 +86,10 @@ if (!PUBLISHABLE_KEY) {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    <ClerkProvider
+      publishableKey={PUBLISHABLE_KEY}
+      afterSignOutUrl="/auth/login"
+    >
       <UserProvider>
         <RouterProvider router={router} />
       </UserProvider>
