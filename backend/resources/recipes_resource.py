@@ -111,7 +111,7 @@ class RecipeByID(Resource):
             db.session.delete(record)
             db.session.commit()
 
-            response_dict = {"message": "Recipe successfully delete"}
+            response_dict = {"message": "Recipe successfully deleted"}
 
             response = make_response(
                 response_dict,

@@ -31,6 +31,10 @@ from backend.resources.cookinghacks_resource import CookingHacksResource, Cookin
 api.add_resource(CookingHacksResource, '/cookinghacks', endpoint='cookinghacks')
 api.add_resource(CookinghacksByID, '/cookinghacks/<int:id>', endpoint='cooking_hacks_by_id')
 
+from backend.resources.cookingtips_resource import CookingTipsResource, CookingTipsByID
+api.add_resource(CookingTipsResource, '/cookingtips', endpoint='cookingtips')
+api.add_resource(CookingTipsByID, '/cookingtips/<int:id>', endpoint='cooking_tips_by_id')
+
 if __name__ == '__main__':
     try:
         app.run(port=5555, debug=True)
