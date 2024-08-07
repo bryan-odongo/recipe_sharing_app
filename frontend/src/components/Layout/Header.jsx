@@ -7,12 +7,15 @@ import {
   BiUserCircle,
 } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
+import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
 
 import { useAuth } from "../../contexts/userContext";
 import clsx from "clsx";
 
 const Header = () => {
+  const { isSignedIn, user, isLoaded } = useUser();
   const { isLoggedIn, setIsLoggedIn, isSearching, setIsSearching } = useAuth();
+
   return (
     <header className="bg-white shadow-md h-[4rem] sticky top-0 z-50 grid items-center">
       <div
@@ -86,7 +89,7 @@ const Header = () => {
           >
             Cooking Tips
           </NavLink>
-          {isLoggedIn ? (
+          {isSignedIn ? (
             <>
               <NavLink
                 onClick={() => setIsSearching(false)}
@@ -135,22 +138,51 @@ const Header = () => {
               </NavLink>
             </>
           )}
-          <NavLink
+          {/* <NavLink
             onClick={() => {
               setIsLoggedIn(!isLoggedIn);
               setIsSearching(false);
             }}
-            to={isLoggedIn ? "/" : "/auth/login"}
+            // to={isLoggedIn ? "/" : "/auth/login"}
             className={({ isActive }) =>
               isActive
-                ? "flex group items-center justify-center space-x-2 text-gray-800 border border-green-600 px-4 py-1.5 rounded-2xl"
-                : "flex group items-center justify-center space-x-2 text-gray-800 hover:text-gray-600 border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"
+                ? `flex group items-center justify-center space-x-2 text-gray-800 ${
+                    !isLoggedIn &&
+                    "border border-green-600 px-4 py-1.5 rounded-2x"
+                  }`
+                : `flex group items-center justify-center space-x-2 text-gray-800 hover:text-gray-600 ${
+                    !isLoggedIn &&
+                    "border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"
+                  }`
             }
           >
-            <span>{isLoggedIn ? "Logout" : "Login"}</span>
-            <BiLock className="group-hover:hidden" />
-            <BiLockOpenAlt className="hidden group-hover:flex" />
-          </NavLink>
+            <span>{isLoggedIn ? <UserButton /> : <SignInButton />}</span>
+            {!isLoggedIn && (
+              <>
+                <BiLock className="group-hover:hidden" />
+                <BiLockOpenAlt className="hidden group-hover:flex" />
+              </>
+            )}
+          </NavLink> */}
+          <>
+            {!user && (
+              <NavLink
+                onClick={() => {
+                  setIsLoggedIn(!isLoggedIn);
+                  setIsSearching(false);
+                }}
+                to={"/auth/login"}
+                className="inline-flex group space-x-1 cursor-pointer justify-center items-center border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"
+              >
+                <span className="font-semibold text-sm ">Sign In</span>
+                <BiLock className="group-hover:hidden" />
+                <BiLockOpenAlt className="hidden group-hover:flex" />
+              </NavLink>
+            )}
+          </>
+          <SignedIn>
+            <UserButton className="inline-flex mr-2" />
+          </SignedIn>
         </nav>
       </div>
     </header>
