@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout/Layout";
+import { useUser } from "@clerk/clerk-react";
 
 function Recipe() {
   const { recipe } = useParams();
+  const { isSignedIn, user } = useUser();
 
   const [singleRecipe, setRecipe] = useState(null);
 
@@ -19,7 +21,13 @@ function Recipe() {
     fetchRecipe();
   }, []);
 
-  console.log(recipe);
+  if (!isSignedIn) {
+    return (
+      <Layout>
+        <h1>Please sign in to view this page</h1>
+      </Layout>
+    );
+  }
   return <Layout>Recipe: {singleRecipe?.title}</Layout>;
 }
 
