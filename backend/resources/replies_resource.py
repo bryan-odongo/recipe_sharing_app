@@ -39,7 +39,7 @@ class RepliesResource(Resource):
             return make_response(jsonify({"error": "Missing required fields"}), 400)
         except Exception as e:
             print(f"Error creating ingredient: {e}")
-            return make_response(jsonify({"error": "Unable to create ingredient", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create reply", "details": str(e)}), 500)
         
 class RepliesByID(Resource):
 
