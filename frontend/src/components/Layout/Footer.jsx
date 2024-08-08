@@ -3,8 +3,8 @@ import { BiLink } from "react-icons/bi";
 
 function Footer() {
   return (
-    <footer className="w-full h-fit">
-      <div className="w-full max-w-4xl xl:max-w-[73rem] mx-auto flex justify-between">
+    <footer className="w-full h-fit bg-slate-50">
+      <div className="w-full text-sm max-w-4xl xl:max-w-[73rem] mx-auto flex justify-between">
         <p className="py-8 font-semibold">
           All rights reserved &copy; 1900 - {new Date().getFullYear()} (WIP)
         </p>

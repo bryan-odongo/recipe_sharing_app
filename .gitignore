@@ -1,3 +1,6 @@
+# Backend
+backend/
+
 ### Flask ###
 instance/*
 !instance/.gitignore

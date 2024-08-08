@@ -54,7 +54,7 @@ CORS(app)
 api.add_resource(RegisterResource, "/api/register")
 api.add_resource(LoginResource, "/api/login")
 api.add_resource(ResetPasswordResource, "/reset-password")
-api.add_resource(UserResource, "/api/users/<int:user_id>")
+api.add_resource(UserResource, "/api/users/<string:identifier>")
 api.add_resource(UserListResource, "/api/users")
 # recipes
 api.add_resource(RecipeListResource, "/api/recipes")
