@@ -1,3 +1,10 @@
+from models.bookmark import Bookmark
+from models.cookinghacks import CookingHacks
+from models.cookingtips import CookingTips
+from models.images import Image
+from models.ingredients import Ingredient
+from models.rating import Rating
+from models.recipe import Recipe
+from models.replies import Replies
+from models.review import Review
 from models.user import User
-# from models.rating import Rating
-# from models.bookmark import Bookmark

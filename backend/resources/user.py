@@ -1,9 +1,10 @@
+from flask import jsonify, make_response
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from flask_restful import Resource, reqparse
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+
 from database import db
 from models import User
-from flask import jsonify
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 BLANK_ERROR = "'{}' cannot be blank."
 USER_ALREADY_EXISTS = "A user with that username or email already exists."
@@ -30,38 +31,40 @@ _user_parser.add_argument(
     "last_name", type=str, required=True, help=BLANK_ERROR.format("last name")
 )
 
+
 class UserRegister(Resource):
     def post(self):
         data = _user_parser.parse_args()
-        
+
         try:
             user = User(
                 username=data["username"],
                 email=data["email"],
                 first_name=data["first_name"],
-                last_name=data["last_name"]
+                last_name=data["last_name"],
             )
             user.password_hash = data["password"]  # The setter will handle hashing
 
             db.session.add(user)
             db.session.commit()
         except ValueError as e:
-            return {"message": str(e)}, 400
+            return make_response({"message": str(e)}, 400)
         except IntegrityError:
             db.session.rollback()
-            return {"message": USER_ALREADY_EXISTS}, 400
+            return make_response({"message": USER_ALREADY_EXISTS}, 400)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return {"message": str(e)}, 500
+            return make_response({"message": str(e)}, 500)
 
-        return {"message": CREATED_SUCCESSFULLY}, 201
+        return make_response({"message": CREATED_SUCCESSFULLY}, 201)
+
 
 class Profile(Resource):
     @jwt_required()
     def get(self):
         current_user = get_jwt_identity()
         user = User.query.get_or_404(current_user)
-        return jsonify(user.to_dict())
+        return make_response(jsonify(user.to_dict()), 200)
 
     @jwt_required()
     def delete(self):
@@ -69,13 +72,13 @@ class Profile(Resource):
         user = User.query.get_or_404(current_user)
         db.session.delete(user)
         db.session.commit()
-        return {"message": "User deleted"}, 200
+        return make_response({"message": "User deleted"}, 200)
 
     @jwt_required()
     def put(self):
         current_user = get_jwt_identity()
         user = User.query.get_or_404(current_user)
-        
+
         update_parser = reqparse.RequestParser()
         update_parser.add_argument("username", type=str, required=False)
         update_parser.add_argument("email", type=str, required=False)
@@ -83,35 +86,35 @@ class Profile(Resource):
         update_parser.add_argument("last_name", type=str, required=False)
         update_parser.add_argument("password", type=str, required=False)
         update_parser.add_argument("bio", type=str, required=False)
-        
+
         data = update_parser.parse_args()
         try:
-            if data['username']:
-                user.username = data['username']
-            if data['email']:
-                user.email = data['email']
-            if data['first_name']:
-                user.first_name = data['first_name']
-            if data['last_name']:
-                user.last_name = data['last_name']
-            if data['bio']:
-                user.last_name = data['bio']
-            if data['password']:
+            if data["username"]:
+                user.username = data["username"]
+            if data["email"]:
+                user.email = data["email"]
+            if data["first_name"]:
+                user.first_name = data["first_name"]
+            if data["last_name"]:
+                user.last_name = data["last_name"]
+            if data["bio"]:
+                user.last_name = data["bio"]
+            if data["password"]:
                 user.password_hash = data["password"]
-        
 
             db.session.commit()
 
         except ValueError as e:
-            return {"message": str(e)}, 400
+            return make_response({"message": str(e)}, 400)
         except IntegrityError:
             db.session.rollback()
-            return {"message": USER_ALREADY_EXISTS}, 400
+            return make_response({"message": USER_ALREADY_EXISTS}, 400)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return {"message": str(e)}, 500
+            return make_response({"message": str(e)}, 500)
 
-        return {"message": "User updated successfully"}, 200
+        return make_response({"message": "User updated successfully"}, 200)
+
 
 class Login(Resource):
     _login_parser = reqparse.RequestParser()
@@ -128,7 +131,5 @@ class Login(Resource):
 
         if user and user.authenticate(data["password"]):
             access_token = create_access_token(identity=user.id)
-            return {"access_token": access_token}, 200
-        return {"message": INVALID_CREDENTIALS}, 401
-
-
+            return make_response({"access_token": access_token}, 200)
+        return make_response({"message": INVALID_CREDENTIALS}, 401)
