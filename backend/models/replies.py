@@ -11,8 +11,8 @@ class Replies(db.Model):
     def to_dict(self, include_review=False):
         data = {
             'id': self.id,
-            'review_id': self.review_id,
             'reply': self.reply,
+            'review': self.review.to_dict() if self.review else None
         }
         if include_review:
             data['review'] = self.review.to_dict() if self.review else None

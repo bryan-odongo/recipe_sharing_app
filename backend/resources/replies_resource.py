@@ -17,14 +17,17 @@ class RepliesResource(Resource):
         try:
             review_id = request.form.get('review_id')
             reply = request.form.get('reply')
-
             if not review_id or not reply:
-                return make_response(jsonify({"error": "Missing required field: review_id and reply"}), 400)
-            
+                return make_response(
+                    jsonify({"error": "Missing required fields: review_id and reply"}), 
+                    400
+                )
             review = Review.query.get(review_id)
-
             if not review:
-                return make_response(jsonify({"error": "Review not found"}), 404)
+                return make_response(
+                    jsonify({"error": "Review not found"}), 
+                    404
+                )
             new_reply = Replies(
                 review_id=review_id,
                 reply=reply
@@ -32,21 +35,39 @@ class RepliesResource(Resource):
             db.session.add(new_reply)
             db.session.commit()
             response_dict = new_reply.to_dict()
-            response = make_response(jsonify(response_dict), 201)
-            return response
+            return make_response(
+                jsonify(response_dict), 
+                201
+            )
+
         except KeyError as ke:
             print(f"Missing key: {ke}")
-            return make_response(jsonify({"error": "Missing required fields"}), 400)
+            return make_response(
+                jsonify({"error": "Missing required fields", "details": str(ke)}), 
+                400
+            )
         except Exception as e:
-            print(f"Error creating ingredient: {e}")
-            return make_response(jsonify({"error": "Unable to create reply", "details": str(e)}), 500)
+            print(f"Error creating reply: {e}")
+            return make_response(
+                jsonify({"error": "Unable to create reply", "details": str(e)}), 
+                500
+            )
         
 class RepliesByID(Resource):
 
     def get(self, id):
-        response_dict = Replies.query.filter_by(id=id).first().to_dict()
-        response = make_response(response_dict,200)
-        return response
+        try:
+            reply = Replies.query.filter_by(id=id).first()
+            if reply is None:
+                return make_response(jsonify({"error": "Reply not found"}), 404)
+
+            response_dict = reply.to_dict(include_review=True)
+            return make_response(jsonify(response_dict), 200)
+
+        except Exception as e:
+            print(f"Error fetching reply: {e}")
+            return make_response(jsonify({"error": "Unable to retrieve reply", "details": str(e)}), 500)
+
     
     def patch(self, id):
         record = Replies.query.filter_by(id=id).first()
