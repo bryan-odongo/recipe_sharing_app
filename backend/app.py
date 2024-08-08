@@ -43,6 +43,11 @@ from backend.resources.ingredients_resource import IngredientsResource, Ingredie
 api.add_resource(IngredientsResource, '/ingredients', endpoint='ingredients')
 api.add_resource(IngredientsByID, '/ingredients/<int:id>', endpoint='ingredients_by_id')
 
+from backend.resources.replies_resource import RepliesResource, RepliesByID
+api.add_resource(RepliesResource, '/replies', endpoint='replies')
+api.add_resource(RepliesByID, '/replies/<int:id>', endpoint='replies_by_id')
+
+
 if __name__ == '__main__':
     try:
         app.run(port=5555, debug=True)

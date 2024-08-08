@@ -21,6 +21,13 @@ with app.app_context():
     ]
     db.session.add_all(users)
     db.session.commit()
+
+    reviews = [
+        Review(id=1),
+        Review(id=2,),
+        Review(id=3),
+        Review(id=4)
+    ]
     
     recipes = [
         Recipe(
