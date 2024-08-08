@@ -11,8 +11,8 @@ class Image(db.Model):
     def to_dict(self):
         return{
             'id': self.id,
-            'recipe_id': self.recipe_id,
-            'image_url': self.image_url
+            'image_url': self.image_url,
+            'recipe': self.recipe.to_dict() if self.recipe else None
         }
     
     def __repr__(self):
