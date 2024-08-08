@@ -6,14 +6,8 @@ import {
   BiSolidDashboard,
   BiUserCircle,
 } from "react-icons/bi";
-import { Link, NavLink } from "react-router-dom";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-  useUser,
-} from "@clerk/clerk-react";
+import { NavLink } from "react-router-dom";
+import { SignedIn, UserButton, useUser } from "@clerk/clerk-react";
 
 import { useAuth } from "../../contexts/userContext";
 import clsx from "clsx";
