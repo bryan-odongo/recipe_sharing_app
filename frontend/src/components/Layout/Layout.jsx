@@ -10,7 +10,7 @@ function Layout({ children }) {
 
     root.setAttribute(
       "class",
-      "flex flex-col justify-between min-h-screen smooth-scroll"
+      "flex flex-col justify-between min-h-screen smooth-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-slate-700"
     );
     setLoading(false);
   }, []);
@@ -21,7 +21,7 @@ function Layout({ children }) {
     <>
       <Header />
       {/* <Search /> */}
-      <main>{children}</main>
+      <main className="h-full w-full">{children}</main>
       <Footer />
     </>
   );
