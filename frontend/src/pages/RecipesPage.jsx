@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import RecipeForm from "../components/Recipes/RecipeForm";
 
@@ -11,7 +10,6 @@ function Recipes() {
       const response = await fetch("http://127.0.0.1:5000/api/recipes");
       const data = await response.json();
       setRecipes(data);
-      // console.log(recipes);
     };
     fetchRecipes();
   }, []);

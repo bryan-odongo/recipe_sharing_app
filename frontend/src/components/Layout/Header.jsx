@@ -14,7 +14,14 @@ import clsx from "clsx";
 
 const Header = () => {
   const { isSignedIn, user, isLoaded } = useUser();
-  const { isLoggedIn, setIsLoggedIn, isSearching, setIsSearching } = useAuth();
+  const {
+    isLoggedIn,
+    dbLogin,
+    setIsLoggedIn,
+    logout,
+    isSearching,
+    setIsSearching,
+  } = useAuth();
 
   return (
     <header className="bg-white shadow-md h-[4rem] sticky top-0 z-50 grid items-center">
@@ -89,7 +96,7 @@ const Header = () => {
           >
             Cooking Tips
           </NavLink>
-          {isSignedIn ? (
+          {isLoggedIn ? (
             <>
               <NavLink
                 onClick={() => setIsSearching(false)}
@@ -138,51 +145,40 @@ const Header = () => {
               </NavLink>
             </>
           )}
-          {/* <NavLink
-            onClick={() => {
-              setIsLoggedIn(!isLoggedIn);
-              setIsSearching(false);
-            }}
-            // to={isLoggedIn ? "/" : "/auth/login"}
-            className={({ isActive }) =>
-              isActive
-                ? `flex group items-center justify-center space-x-2 text-gray-800 ${
-                    !isLoggedIn &&
-                    "border border-green-600 px-4 py-1.5 rounded-2x"
-                  }`
-                : `flex group items-center justify-center space-x-2 text-gray-800 hover:text-gray-600 ${
-                    !isLoggedIn &&
-                    "border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"
-                  }`
-            }
-          >
-            <span>{isLoggedIn ? <UserButton /> : <SignInButton />}</span>
-            {!isLoggedIn && (
-              <>
-                <BiLock className="group-hover:hidden" />
-                <BiLockOpenAlt className="hidden group-hover:flex" />
-              </>
-            )}
-          </NavLink> */}
-          <>
-            {!user && (
-              <NavLink
-                onClick={() => {
-                  setIsLoggedIn(!isLoggedIn);
-                  setIsSearching(false);
-                }}
-                to={"/auth/login"}
-                className="inline-flex group space-x-1 cursor-pointer justify-center items-center border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"
-              >
-                <span className="font-semibold text-sm ">Sign In</span>
-                <BiLock className="group-hover:hidden" />
-                <BiLockOpenAlt className="hidden group-hover:flex" />
-              </NavLink>
-            )}
-          </>
-          <SignedIn>
-            <UserButton className="inline-flex mr-2" />
-          </SignedIn>
+
+          {isLoggedIn ? null : (
+            <NavLink
+              onClick={() => {
+                // setIsLoggedIn(!isLoggedIn);
+                setIsSearching(false);
+              }}
+              to={"/auth/login"}
+              className="inline-flex group space-x-1 cursor-pointer justify-center items-center border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"
+            >
+              <span className="font-semibold text-sm ">Sign In</span>
+              <BiLock className="group-hover:hidden" />
+              <BiLockOpenAlt className="hidden group-hover:flex" />
+            </NavLink>
+          )}
+          {isLoggedIn && dbLogin ? (
+            <NavLink
+              onClick={() => {
+                // setIsLoggedIn(!isLoggedIn);
+                setIsSearching(false);
+                logout();
+              }}
+              // to={"/auth/login"}
+              className="inline-flex group space-x-1 cursor-pointer justify-center items-center border border-cyan-300 hover:border-green-600 duration-300 ease-in-out px-4 py-1.5 rounded-2xl"
+            >
+              <span className="font-bold text-sm ">Logout</span>
+              <BiLock className="group-hover:hidden" />
+              <BiLockOpenAlt className="hidden group-hover:flex" />
+            </NavLink>
+          ) : (
+            <SignedIn>
+              <UserButton className="inline-flex mr-2" />
+            </SignedIn>
+          )}
         </nav>
       </div>
     </header>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Search from "./Search";
+import { ToastContainer } from "react-toastify";
 
 function Layout({ children }) {
   const [loading, setLoading] = useState(true);
@@ -23,6 +24,13 @@ function Layout({ children }) {
       {/* <Search /> */}
       <main className="h-full w-full">{children}</main>
       <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+      />
     </>
   );
 }

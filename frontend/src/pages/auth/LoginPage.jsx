@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import { SignIn, SignUp } from "@clerk/clerk-react";
 import clsx from "clsx";
+import { toast } from "react-toastify";
 
 import bg from "../../assets/imgs/login_bg.png";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/userContext";
 
 function Login() {
-  const [isSignIn, setIsSignIn] = useState(false);
+  const { setIsLoggedIn, isLoggedIn } = useAuth();
+
+  const navigate = useNavigate();
+  const [isSignIn, setIsSignIn] = useState(true);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     email: "",
@@ -25,20 +31,44 @@ function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isSignIn) {
-      // Handle login submission
 
-      console.log("Login data:", formData.email, formData.password);
-      setFormData({
-        email: "",
-        password: "",
-        firstname: "",
-        lastname: "",
-        username: "",
-        password_confirmation: "",
+    if (isSignIn) {
+      const data = { email: formData.email, password: formData.password };
+      const res = await fetch("http://127.0.0.1:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then((res) => {
+        return res.json();
       });
+
+      if (res?.error) {
+        const notify = () => toast.error(res.error, { theme: "colored" });
+        notify();
+        return;
+      }
+
+      if (res?.success) {
+        const to = setTimeout(() => {
+          const notify = () =>
+            toast.success("Login Successful !", { theme: "colored" });
+          notify();
+        }, 1000);
+
+        setFormData(null);
+
+        localStorage.setItem("access_token", res.access_token, { expires: 7 });
+        localStorage.setItem("refresh_token", res.refresh_token, {
+          expires: 7,
+        });
+        localStorage.setItem("user", formData.email, { expires: 7 });
+        setIsLoggedIn(true);
+        navigate("/recipes");
+      }
     } else {
       // Handle registration submission
       if (formData.password !== formData.password_confirmation) {
@@ -49,6 +79,9 @@ function Login() {
           lastname: "",
           username: "",
         });
+        const notify = () =>
+          toast.error("Password did not match !", { theme: "colored" });
+        notify();
         return;
       }
 
@@ -60,10 +93,26 @@ function Login() {
           lastname: "",
           username: "",
         });
+        const notify = () =>
+          toast.error("Passwords MUST be atleast 8 character", {
+            theme: "colored",
+          });
+        notify();
         return;
       }
+
+      const res = await fetch("http://127.0.0.1:5000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }).then((res) => {
+        return res.json();
+      });
+
       setError(null);
-      console.log("Registration data:", formData);
+      console.log("Registration data:", res);
       setFormData({
         email: "",
         password: "",
@@ -72,6 +121,11 @@ function Login() {
         username: "",
         password_confirmation: "",
       });
+      const notify = () =>
+        toast.success("Registration Successful", {
+          theme: "colored",
+        });
+      notify();
     }
   };
 

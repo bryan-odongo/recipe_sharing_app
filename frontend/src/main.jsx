@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ClerkProvider } from "@clerk/clerk-react";
 
 import "./index.css";
+import "react-toastify/dist/ReactToastify.css";
 
 /* PAGES */
 // CMS
