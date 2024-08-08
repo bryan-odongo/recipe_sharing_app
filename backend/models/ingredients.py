@@ -21,7 +21,7 @@ class Ingredient(db.Model):
             'id': self.id,
             'name': self.name,
             'image': self.image,
-            'recipe_id': self.recipe_id
+            'recipe': self.recipe.to_dict() if self.recipe else None
         }
     
     def __repr__(self):

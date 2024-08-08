@@ -39,6 +39,10 @@ from backend.resources.images_resource import ImagesResource, ImagesByID
 api.add_resource(ImagesResource, '/images', endpoint='images')
 api.add_resource(ImagesByID, '/images/<int:id>', endpoint='images_by_id')
 
+from backend.resources.ingredients_resource import IngredientsResource, IngredientsByID
+api.add_resource(IngredientsResource, '/ingredients', endpoint='ingredients')
+api.add_resource(IngredientsByID, '/ingredients/<int:id>', endpoint='ingredients_by_id')
+
 if __name__ == '__main__':
     try:
         app.run(port=5555, debug=True)
