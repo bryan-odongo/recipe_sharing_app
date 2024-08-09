@@ -1,22 +1,22 @@
 from sqlalchemy.orm import validates
 from datetime import datetime
 import re
-from . import db
+from backend.database import db
 
 class Recipe(db.Model):
     __tablename__ = 'recipes'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    title = db.Column(db.String, nullable=False)
-    description = db.Column(db.String, nullable=False)
-    instructions = db.Column(db.String, nullable=False)
-    country = db.Column(db.String, nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(2000), nullable=False)
+    instructions = db.Column(db.String(2000), nullable=False)
+    country = db.Column(db.String(100), nullable=False)
     prep_time = db.Column(db.Integer, nullable=False)
     cook_time = db.Column(db.Integer, nullable=False)
     servings = db.Column(db.Integer, nullable=False)
-    diet = db.Column(db.String, nullable=False)
-    image_url = db.Column(db.String, nullable=False)
-    skill_level = db.Column(db.String)
+    diet = db.Column(db.String(100), nullable=False)
+    image_url = db.Column(db.String(255), nullable=False)
+    skill_level = db.Column(db.String(100))
     created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 
     user = db.relationship('User', back_populates='recipe')

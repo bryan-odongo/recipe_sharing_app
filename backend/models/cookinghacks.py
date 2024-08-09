@@ -1,10 +1,10 @@
-from . import db
+from backend.database import db
 from sqlalchemy.orm import validates
 
 class CookingHacks(db.Model):
     __tablename__ = 'cookinghacks'
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String, nullable=False)
+    content = db.Column(db.String(2000), nullable=False)
 
     @validates('content')
     def validate_content(self, key, value):

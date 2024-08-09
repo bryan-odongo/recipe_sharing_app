@@ -1,10 +1,10 @@
-from . import db
+from backend.database import db
 
 class Replies(db.Model):
     __tablename__ = 'replies'
     id = db.Column(db.Integer, primary_key=True)
     review_id = db.Column(db.Integer, db.ForeignKey('reviews.id'), nullable=False)
-    reply = db.Column(db.String)
+    reply = db.Column(db.String(1000))
 
     review = db.relationship('Review', back_populates='replies')
 

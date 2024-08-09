@@ -1,11 +1,11 @@
-from . import db
+from backend.database import db
 from sqlalchemy.orm import validates
 
 class CookingTips(db.Model):
     __tablename__ = 'cookingtips'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    content = db.Column(db.String, nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.String(2000), nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.now(), nullable=False)
 

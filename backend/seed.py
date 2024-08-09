@@ -1,7 +1,14 @@
 import os
 from datetime import datetime
-from flask import Flask
-from backend.models import db, CookingHacks, Recipe, Replies, Ingredient, Image, CookingTips, Review, User
+from backend.database import db
+from backend.models.user import User
+from backend.models.cookinghacks import CookingHacks
+from backend.models.cookingtips import CookingTips
+from backend.models.images import Image
+from backend.models.ingredients import Ingredient
+from backend.models.recipes import Recipe
+from backend.models.replies import Replies
+from backend.models.review import Review
 from backend.app import app
 from backend.config import config
 
@@ -12,22 +19,13 @@ with app.app_context():
     db.drop_all()
     db.create_all()
 
-    users = [
-        User(id=1), 
-        User(id=2),
-        User(id=3),
-        User(id=4),
-        User(id=5)
-    ]
+    users = [User(id=1), User(id=2), User(id=3), User(id=4), User(id=5)]
     db.session.add_all(users)
     db.session.commit()
 
-    reviews = [
-        Review(id=1),
-        Review(id=2,),
-        Review(id=3),
-        Review(id=4)
-    ]
+    reviews = [Review(id=1), Review(id=2), Review(id=3), Review(id=4)]
+    db.session.add_all(reviews)
+    db.session.commit()
     
     recipes = [
         Recipe(

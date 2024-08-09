@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from backend.config import config
-from backend.models import db, migrate  
+from backend.database import db, migrate 
 
 app = Flask(__name__)
 
