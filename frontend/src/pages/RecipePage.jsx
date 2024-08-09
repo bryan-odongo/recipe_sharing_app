@@ -1,125 +1,89 @@
 import React, { useState, useEffect } from 'react';
-import Layout from './Layout';
+import { useParams, useNavigate } from 'react-router-dom'; 
+import Layout from '../components/Layout/Layout';
 
 
-const RecipeDetails = ({ match }) => {
+const RecipeDetails = () => {
+    const { id } = useParams();
+    const navigate = useNavigate(); 
     const [recipe, setRecipe] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [rating, setRating] = useState(0);
-    const [review, setReview] = useState('');
-    const [bookmarked, setBookmarked] = useState(false);
-
-    // Fetch recipe from API
+    
     useEffect(() => {
-        const fetchRecipe = async () => {
-            try {
-                const response = await fetch(`https://the-backend-api.com/recipes/${match.params.id}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch recipe');
-                }
-                const data = await response.json();
-                setRecipe(data);
-                setLoading(false);
-            } catch (error) {
-                setError(error.message);
-                setLoading(false);
-            }
-        };
+        // Fetch recipe details by ID
+        fetch(`/api/recipes/${id}`)
+            .then(response => response.json())
+            .then(data => setRecipe(data))
+            .catch(error => console.error('Error fetching recipe:', error));
+    }, [id]);
 
-        fetchRecipe();
-    }, [match.params.id]);
-
-    const handleRating = (rate) => {
-        setRating(rate);
+    const handlePreviousClick = () => {
+        navigate(-1); 
     };
 
-    const handleReviewChange = (e) => {
-        setReview(e.target.value);
+    const handleNextClick = () => {
+        const nextRecipeId = parseInt(id) + 1;
+        navigate(`/recipes/${nextRecipeId}`); 
     };
 
-    const handleBookmark = () => {
-        setBookmarked(!bookmarked);
-    };
-
-    if (loading) {
-        return (
-            <Layout>
-                <div className="loading">Loading...</div>
-            </Layout>
-        );
-    }
-
-    if (error) {
-        return (
-            <Layout>
-                <div className="error">{error}</div>
-            </Layout>
-        );
+    if (!recipe) {
+        return <div>Loading...</div>;
     }
 
     return (
         <Layout>
             <div className="recipe-details">
-                <h1 className="recipe-title">{recipe.title}</h1>
-                <img src={recipe.image} alt={recipe.title} className="recipe-image" />
-                
-                <div className="recipe-info">
-                    <p><strong>Preparation Time:</strong> {recipe.prepTime}</p>
-                    <p><strong>Cooking Time:</strong> {recipe.cookTime}</p>
+                <div className="recipe-header">
+                    <div className="recipe-image">
+                        <img src={recipe.mainImage} alt={recipe.title} />
+                    </div>
+                    <div className="recipe-info">
+                        <h1>{recipe.title}</h1>
+                        <p>{recipe.author}</p>
+                        <div className="rating">Rating: {recipe.rating} ★</div>
+                    </div>
                 </div>
 
-                <div className="recipe-ingredients">
-                    <h2>Ingredients</h2>
-                    <ul>
+                <div className="recipe-content">
+                    <div className="ingredients">
+                        <h2>Ingredients</h2>
                         {recipe.ingredients.map((ingredient, index) => (
-                            <li key={index}>{ingredient}</li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div className="recipe-instructions">
-                    <h2>Instructions</h2>
-                    <ol>
-                        {recipe.instructions.map((instruction, index) => (
-                            <li key={index}>{instruction}</li>
-                        ))}
-                    </ol>
-                </div>
-
-                <div className="chef-notes">
-                    <h3>Chef's Notes</h3>
-                    <p>{recipe.chefNotes}</p>
-                </div>
-
-                <div className="recipe-actions">
-                    <button onClick={handleBookmark} className="bookmark-button">
-                        {bookmarked ? 'Remove Bookmark' : 'Bookmark'}
-                    </button>
-                    <button className="share-button">Share</button>
-                </div>
-
-                <div className="user-interaction">
-                    <h3>Your Rating</h3>
-                    <div className="rating">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <span
-                                key={star}
-                                className={star <= rating ? 'star filled' : 'star'}
-                                onClick={() => handleRating(star)}
-                            >
-                                ☆
-                            </span>
+                            <div key={index} className="ingredient">
+                                <img src={ingredient.image} alt={ingredient.name} />
+                                <p>{ingredient.name}</p>
+                            </div>
                         ))}
                     </div>
 
-                    <h3>Your Review</h3>
-                    <textarea
-                        value={review}
-                        onChange={handleReviewChange}
-                        placeholder="What did you think about this recipe?"
-                        className="review-textarea"
-                    />
+                    <div className="recipe-body">
+                        <div className="summary">
+                            <h2>Recipe At A Glance</h2>
+                            <p>{recipe.summary}</p>
+                        </div>
+
+                        <div className="steps">
+                            <h2>Steps</h2>
+                            {recipe.steps.map((step, index) => (
+                                <div key={index} className="step">
+                                    <h3>Step {index + 1}</h3>
+                                    <p>{step}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="navigation-buttons">
+                    <button onClick={handlePreviousClick} className="previous-button">Previous</button>
+                    <button onClick={handleNextClick} className="next-button">Next</button>
+                </div>
+
+                <div className="comments-section">
+                    <h2>Comments</h2>
+                    {recipe.comments.map((comment, index) => (
+                        <div key={index} className="comment">
+                            <p><strong>{comment.author}:</strong> {comment.text}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </Layout>
