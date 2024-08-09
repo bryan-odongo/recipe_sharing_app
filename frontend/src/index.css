@@ -43,6 +43,11 @@
 }
 
 /* contactPage.css */
+.about-container {
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
 .titleText {
   font-size: 52px;
   font-family: 'Inter', sans-serif;
@@ -145,6 +150,11 @@ input[type="checkbox"] {
 }
 
 /* aboutUs page */
+.contact-container {
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
 .banner-container {
   display: flex;
   align-items: center;
@@ -277,6 +287,12 @@ input[type="checkbox"] {
 
 .button-content:hover {
   background-color: darkgrey;
+}
+
+#message {
+  height: 100px; 
+  padding: 8px;
+  font-size: 16px;
 }
 
 

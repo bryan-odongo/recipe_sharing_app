@@ -96,128 +96,130 @@ function Contact() {
 
   return (
     <Layout>
-      <div className="title-container">
-        <h1 className="titleText">How can we help you out?</h1>
-        <h1 className="titleText">Reach out to us or visit our nearest office.</h1>
-      </div>
-
-      <div className="main-container">
-        <div className="info-container">
-          <div className="info-container-heading">
-            <h2 style={{ fontSize: '24px' }}>Contact Information</h2>
-            <p>Say something to start a chat!</p>
-          </div>
-
-          <div className="info-container-content">
-            <p className="content-p-tags">🕾 +1012 3456 789</p>
-            <p className="content-p-tags">🖂 demo@gmail.com</p>
-            <p className="content-p-tags">🖈 262 Tama Towers, Lubowitzshire, IA 49410</p>
-          </div>
+      <div className="contact-container">
+        <div className="title-container">
+          <h1 className="titleText">How can we help you out?</h1>
+          <h1 className="titleText">Reach out to us or visit our nearest office.</h1>
         </div>
 
-        <div className="form-container">
-          <form onSubmit={handleSubmit}>
+        <div className="main-container">
+          <div className="info-container">
+            <div className="info-container-heading">
+              <h2 style={{ fontSize: '24px' }}>Contact Information</h2>
+              <p>Say something to start a chat!</p>
+            </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="firstName">First Name</label>
+            <div className="info-container-content">
+              <p className="content-p-tags">🕾 +1012 3456 789</p>
+              <p className="content-p-tags">🖂 demo@gmail.com</p>
+              <p className="content-p-tags">🖈 262 Tama Towers, Lubowitzshire, IA 49410</p>
+            </div>
+          </div>
+
+          <div className="form-container">
+            <form onSubmit={handleSubmit}>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="firstName">First Name</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="lastName">Last Name</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="text"
+                    id="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="phoneNumber">Phone Number</label>
+                  <input
+                    type="text"
+                    id="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    id="generalInquiry"
+                    checked={formData.generalInquiry}
+                    onChange={handleChange}
+                  />
+                  General Inquiry
+                </label>
+
+                <label>
+                  <input
+                    type="checkbox"
+                    id="recipeAssistance"
+                    checked={formData.recipeAssistance}
+                    onChange={handleChange}
+                  />
+                  Recipe Assistance
+                </label>
+
+                <label>
+                  <input
+                    type="checkbox"
+                    id="technicalInquiry"
+                    checked={formData.technicalInquiry}
+                    onChange={handleChange}
+                  />
+                  Technical Inquiry
+                </label>
+
+                <label>
+                  <input
+                    type="checkbox"
+                    id="feedback"
+                    checked={formData.feedback}
+                    onChange={handleChange}
+                  />
+                  Feedback
+                </label>
+              </div>
+
+              <div className="message-container">
+                <label htmlFor="message">Message</label>
                 <input
                   type="text"
-                  id="firstName"
-                  value={formData.firstName}
+                  id="message"
+                  value={formData.message}
                   onChange={handleChange}
+                  placeholder="Write your message..."
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="lastName">Last Name</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
+              <button type="submit" className="submit-button">Send Message</button>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="text"
-                  id="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="phoneNumber">Phone Number</label>
-                <input
-                  type="text"
-                  id="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div className="checkbox-group">
-              <label>
-                <input
-                  type="checkbox"
-                  id="generalInquiry"
-                  checked={formData.generalInquiry}
-                  onChange={handleChange}
-                />
-                General Inquiry
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  id="recipeAssistance"
-                  checked={formData.recipeAssistance}
-                  onChange={handleChange}
-                />
-                Recipe Assistance
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  id="technicalInquiry"
-                  checked={formData.technicalInquiry}
-                  onChange={handleChange}
-                />
-                Technical Inquiry
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  id="feedback"
-                  checked={formData.feedback}
-                  onChange={handleChange}
-                />
-                Feedback
-              </label>
-            </div>
-
-            <div className="message-container">
-              <label htmlFor="message">Message</label>
-              <input
-                type="text"
-                id="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Write your message..."
-              />
-            </div>
-
-            <button type="submit" className="submit-button">Send Message</button>
-
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </Layout>
