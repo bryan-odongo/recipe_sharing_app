@@ -1,6 +1,7 @@
 from flask import jsonify, request, make_response
 from flask_restful import Resource
-from backend.models.images import Image, db
+from backend.models.images import Image
+from backend.database import db
 
 class ImagesResource(Resource):
 

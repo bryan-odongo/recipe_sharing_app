@@ -1,6 +1,7 @@
 from flask import jsonify, request, make_response
 from flask_restful import Resource
-from backend.models.cookinghacks import CookingHacks, db
+from backend.models.cookinghacks import CookingHacks
+from backend.database import db
 
 class CookingHacksResource(Resource):
 

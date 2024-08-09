@@ -12,10 +12,8 @@ class Replies(db.Model):
         data = {
             'id': self.id,
             'reply': self.reply,
-            'review': self.review.to_dict() if self.review else None
+            'review': self.review.to_dict() if include_review and self.review else None
         }
-        if include_review:
-            data['review'] = self.review.to_dict() if self.review else None
         return data
 
     def __repr__(self):

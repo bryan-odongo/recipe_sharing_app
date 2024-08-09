@@ -1,7 +1,10 @@
 from datetime import datetime
 from flask import jsonify, request, make_response
 from flask_restful import Resource
-from backend.models.recipes import Recipe, db  
+from backend.models.recipes import Recipe
+from backend.models.ingredients import Ingredient
+from backend.models.images import Image
+from backend.database import db
 
 class RecipeResource(Resource):
     
@@ -12,7 +15,8 @@ class RecipeResource(Resource):
         except Exception as e:
             print(f"An error occurred: {e}")
             return {"message": "Internal Server Error"}, 500
-
+    
+    ## Do not test endpoint first 
     def post(self):
         try:
             created_at_str = request.form.get('created_at')
@@ -29,6 +33,9 @@ class RecipeResource(Resource):
             diet = request.form.get('diet')
             image_url = request.form.get('image_url')
             skill_level = request.form.get('skill_level')
+
+            ingredients = request.form.getlist('ingredients')
+            image_urls = request.form.getlist('image_urls')
 
             new_recipe = Recipe(
                 user_id=user_id,
@@ -47,6 +54,14 @@ class RecipeResource(Resource):
 
             db.session.add(new_recipe)
             db.session.commit()
+
+            for ingredient_name in ingredients:
+                ingredient = Ingredient(name=ingredient_name, recipe_id=new_recipe.id)
+                db.session.add(ingredient)
+
+            for image_url in image_urls:
+                image = Image(url=image_url, recipe_id=new_recipe.id)
+                db.session.add(image)
 
             response_dict = new_recipe.to_dict()
             response = make_response(jsonify(response_dict), 201)

@@ -1,7 +1,8 @@
 from flask import jsonify, request, make_response
 from flask_restful import Resource
 from backend.models.recipes import Recipe
-from backend.models.ingredients import Ingredient, db
+from backend.models.ingredients import Ingredient
+from backend.database import db
 
 class IngredientsResource(Resource):
 

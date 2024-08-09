@@ -1,7 +1,8 @@
 from datetime import datetime
 from flask import jsonify, request, make_response
 from flask_restful import Resource
-from backend.models.cookingtips import CookingTips, db
+from backend.models.cookingtips import CookingTips
+from backend.database import db
 
 class CookingTipsResource(Resource):
 

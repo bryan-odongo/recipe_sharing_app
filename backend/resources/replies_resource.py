@@ -1,7 +1,8 @@
 from flask import jsonify, request, make_response
 from flask_restful import Resource
 from backend.models.review import Review
-from backend.models.replies import Replies, db
+from backend.database import db
+from backend.models.replies import Replies
 
 class RepliesResource(Resource):
 
